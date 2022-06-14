@@ -14,3 +14,12 @@ Resources:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
       TableName: husky_shelter
+  AnimalImagesBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: animalimagesbucket
+Outputs:
+  S3BucketName:
+    Description: BucketName
+    Value:
+      Ref: AnimalImagesBucket
