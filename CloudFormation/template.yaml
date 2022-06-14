@@ -1,5 +1,4 @@
 AWSTemplateFormatVersion: "2010-09-09"
-<<<<<<< HEAD
 Transform: AWS::Serverless-2016-10-31
 
 Resources:
@@ -41,7 +40,4 @@ Resources:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
 
-      TableName: "husky_shelter"      
-=======
-Transform: AWS::Serverless-2016-10-31
->>>>>>> origin/main
+      TableName: "husky_shelter"
