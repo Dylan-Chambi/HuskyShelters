@@ -8,7 +8,7 @@ LONGOPTS=install,build,deploy,remove
 i=0 p=0 b=0 d=0
 
 # CF_FILE="/tmp/cf_file.txt"
-DEPLOYMENTS_BUCKET="deployments-cloud-formation-lambda" #CHANGE TO YOUR OWN BUCKET
+DEPLOYMENTS_BUCKET="camibucketdeloyment" #CHANGE TO YOUR OWN BUCKET
 PACKAGED_TEMPLATE="packaged-template.yaml"
 
 case "$1" in
@@ -53,6 +53,6 @@ if [[ $d -eq 1 ]]; then
   aws cloudformation deploy \
     --no-fail-on-empty-changeset \
     --template-file $PACKAGED_TEMPLATE \
-    --stack-name db-deploy-stack \
+    --stack-name husky-shelter-stack \
     --capabilities CAPABILITY_NAMED_IAM
 fi
