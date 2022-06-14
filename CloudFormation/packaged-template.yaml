@@ -7,16 +7,6 @@ Resources:
       AttributeDefinitions:
       - AttributeName: id
         AttributeType: S
-      - AttributeName: health
-        AttributeType: S
-      - AttributeName: status
-        AttributeType: S
-      - AttributeName: age
-        AttributeType: N
-      - AttributeName: location
-        AttributeType: S
-      - AttributeName: image_collection_id
-        AttributeType: S
       KeySchema:
       - AttributeName: id
         KeyType: HASH
