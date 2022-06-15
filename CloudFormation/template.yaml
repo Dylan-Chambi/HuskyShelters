@@ -63,6 +63,7 @@ Resources:
             S3OriginConfig:
               OriginAccessIdentity: !Sub 'origin-access-identity/cloudfront/${CloudFrontOriginIdentity}'
         Enabled: true
+        DefaultRootObject: 'index.html'
         DefaultCacheBehavior:
           AllowedMethods:
             - GET

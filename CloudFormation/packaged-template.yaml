@@ -58,6 +58,7 @@ Resources:
             OriginAccessIdentity:
               Fn::Sub: origin-access-identity/cloudfront/${CloudFrontOriginIdentity}
         Enabled: true
+        DefaultRootObject: index.html
         DefaultCacheBehavior:
           AllowedMethods:
           - GET
