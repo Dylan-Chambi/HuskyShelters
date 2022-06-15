@@ -7,21 +7,29 @@ def update_item(event, context):
     
     body = json.loads(event["body"])
     print(body)
-    
-    table.update_item(
-        Key={'id': body["id"]},
-        AttributeUpdates={
-            "age": body["age"],
-            "collectionOfImages": body["collectionOfImages"],
-            "health": body["health"],
-            "location": body["location"],
-            "name": body["name"],
-            "status": body["status"]
+    response = table.update_item(
+        Key={
+            'id': body['id']
         },
+        ExpressionAttributeNames={
+            '#age': 'age',
+            '#collectionOfImages': 'collectionOfImages',
+            '#health': 'health',
+            '#location': 'location',
+            '#name': 'name',
+            '#status': 'status'
+        },
+        ExpressionAttributeValues={
+            ':age': str(body['age']),
+            ':collectionOfImages': body['collectionOfImages'],
+            ':health': body['health'],
+            ':location': body['location'],
+            ':name': body['name'],
+            ':status': body['status'],
+        },
+        UpdateExpression='SET #age = :age, #collectionOfImages = :collectionOfImages, #health = :health, #location = :location, #name = :name, #status = :status',
     )
-    
-
     return {
         'statusCode': 200,
-        'body': "API test"
+        'body': json.dumps(response)
     }
