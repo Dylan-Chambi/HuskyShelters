@@ -2,6 +2,34 @@ AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 
 Resources:
+  HuskySheltersAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: aws
+      Name: husky-shelters-api
+      DefinitionBody:
+        'Fn::Transform':
+          Name: 'AWS::Include'
+          Parameters:
+            Location: swaggerFile.yaml
+      
+  UpdateItem:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: update-item-husky-shelters
+      Handler: app.update_item
+      Runtime: python3.9
+      CodeUri: build
+      Events:
+        UpdateItem:
+          Type: Api
+          Properties:
+            RestApiId: !Ref HuskySheltersAPI
+            Path: "/update-item"
+            Method: POST
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Table
   Table:
     Type: AWS::DynamoDB::Table
     Properties:
