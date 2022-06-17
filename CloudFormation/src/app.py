@@ -126,3 +126,9 @@ def excel_processing_handler(event, context):
 
 
 
+def get_table_items(event, context):
+    response = table.scan()
+    return {
+        'statusCode': 200,
+        'body': json.dumps(response['Items'])
+    }
