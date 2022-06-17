@@ -76,7 +76,7 @@ def excel_processing_handler(event, context):
 
     csv_file = s3.get_object(Bucket=bucket, Key=key)
 
-    animal_data = csv_file['Body'].read().decode('utf-8').split('\n')
+    animal_data = csv_file['Body'].read().decode('utf-8-sig').split('\n')
     csv_reader = csv.reader(animal_data, delimiter=',', quotechar='"')
 
    
@@ -94,6 +94,7 @@ def excel_processing_handler(event, context):
             location = row[4]
             images = row[5]
             type = row[6]
+            age = row[7]
 
 
         add_to_dynamo = dynamodb.put_item(
@@ -107,7 +108,8 @@ def excel_processing_handler(event, context):
                 'status' : {'S': status},
                 'location' : {'S': location},
                 'images' : {'S': images},
-                'type' : {'S': type}
+                'type' : {'S': type},
+                'age' : {'S': age}
             
             }
 
