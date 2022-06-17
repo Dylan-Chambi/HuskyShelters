@@ -30,6 +30,23 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Table
+  GetTableItems:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: get-table-items-husky-shelters
+      Handler: app.get_table_items
+      Runtime: python3.9
+      CodeUri: build
+      Events:
+        GetTableItems:
+          Type: Api
+          Properties:
+            RestApiId: !Ref HuskySheltersAPI
+            Path: "/table-items"
+            Method: GET
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Table
   Table:
     Type: AWS::DynamoDB::Table
     Properties:

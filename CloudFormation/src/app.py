@@ -53,3 +53,11 @@ def update_item(event, context):
             'statusCode': 400,
             'body': json.dumps("Error updating item")
         }
+
+
+def get_table_items(event, context):
+    response = table.scan()
+    return {
+        'statusCode': 200,
+        'body': json.dumps(response['Items'])
+    }
