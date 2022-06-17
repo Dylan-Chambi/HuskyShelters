@@ -25,6 +25,33 @@ Resources:
       WebsiteConfiguration:
         ErrorDocument: index.html
         IndexDocument: index.html
+  AnimalDataBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: animaldatabucket346253
+  ExcelProcessingFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.excel_processing_handler
+      Runtime: python3.6
+      CodeUri: s3://camibucketdeloyment/aa89b37fb3f3db85a53a78323a3cd2a9
+      Events:
+        ProcessExcel:
+          Type: S3
+          Properties:
+            Bucket:
+              Ref: AnimalDataBucket
+            Events: s3:ObjectCreated:*
+            Filter:
+              S3Key:
+                Rules:
+                - Name: suffix
+                  Value: .csv
+      Policies:
+      - S3ReadPolicy:
+          BucketName: animaldatabucket346253
+      - DynamoDBCrudPolicy:
+          TableName: husky_shelter
   CloudFrontOriginIdentity:
     Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
     Properties:
@@ -80,6 +107,10 @@ Outputs:
     Description: BucketName
     Value:
       Ref: WebsiteAdoptionBucket
+  S3DataBucketName:
+    Description: BucketName
+    Value:
+      Ref: AnimalDataBucket
   S3WebsiteAdoptionBucketURL:
     Description: BucketURL
     Value:
