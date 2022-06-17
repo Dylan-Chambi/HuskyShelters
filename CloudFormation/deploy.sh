@@ -55,4 +55,8 @@ if [[ $d -eq 1 ]]; then
     --template-file $PACKAGED_TEMPLATE \
     --stack-name husky-shelter-stack \
     --capabilities CAPABILITY_NAMED_IAM
+
+  aws s3 cp ./src/animalAdoptionData.csv s3://animaldatabucket346253/  
+
 fi
+
