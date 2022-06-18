@@ -71,10 +71,110 @@ Resources:
     Properties:
       BucketName: animalimagesbucket
 
+  WebsiteAdoptionBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: websiteadoptionbucket
+      WebsiteConfiguration:
+        ErrorDocument: 'index.html'
+        IndexDocument: 'index.html'
+
+  AnimalDataBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: animaldatabucket346253
+
+  ExcelProcessingFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.excel_processing_handler
+      Runtime: python3.6
+      CodeUri: build
+      Events:
+        ProcessExcel:
+          Type: S3
+          Properties:
+            Bucket:
+              Ref: "AnimalDataBucket"
+            Events: s3:ObjectCreated:*
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: suffix
+                    Value: ".csv" 
+      Policies:
+        - S3ReadPolicy:
+            BucketName: 'animaldatabucket346253'
+        - DynamoDBCrudPolicy:
+            TableName: 'husky_shelter'
+
+
+
+        
+       
+
+  CloudFrontOriginIdentity:
+    Type: 'AWS::CloudFront::CloudFrontOriginAccessIdentity'
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: 'CloudFront Origin Identity for Husky Shelter'
+
+  WebsiteAdoptionBucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    Properties:
+      Bucket: websiteadoptionbucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: 'Allow'
+            Principal:
+              AWS: !Sub 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOriginIdentity}'
+            Action: 's3:GetObject'
+            Resource: 'arn:aws:s3:::websiteadoptionbucket/*'
+
+  CloudFrontDistribution:
+    Type: 'AWS::CloudFront::Distribution'
+    Properties:
+      DistributionConfig:
+        Origins:
+          - DomainName: !GetAtt WebsiteAdoptionBucket.DomainName
+            Id: websiteadoptionid
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub 'origin-access-identity/cloudfront/${CloudFrontOriginIdentity}'
+        Enabled: true
+        DefaultRootObject: 'index.html'
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - GET
+            - HEAD
+          TargetOriginId: websiteadoptionid
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: 'none'
+          ViewerProtocolPolicy: 'redirect-to-https'
+        ViewerCertificate:
+          CloudFrontDefaultCertificate: true      
+          
+
+                 
+
 Outputs:
-  S3BucketName:
+  S3ImagesBucketName:
     Description: BucketName
     Value: !Ref AnimalImagesBucket      
+
+  S3WebsiteAdoptionBucketName:
+    Description: BucketName
+    Value: !Ref WebsiteAdoptionBucket  
+
+  S3DataBucketName:
+    Description: BucketName
+    Value: !Ref AnimalDataBucket  
+
+  S3WebsiteAdoptionBucketURL:
+    Description: BucketURL
+    Value: !GetAtt WebsiteAdoptionBucket.WebsiteURL  
 
 
 
