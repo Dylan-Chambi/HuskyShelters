@@ -28,7 +28,24 @@ Resources:
             Path: "/update-item"
             Method: POST
       Policies:
-        - DynamoDBCrudPolicy:
+        - DynamoDBWritePolicy: 
+            TableName: !Ref Table
+  GetTableItems:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: get-table-items-husky-shelters
+      Handler: app.get_table_items
+      Runtime: python3.9
+      CodeUri: build
+      Events:
+        GetTableItems:
+          Type: Api
+          Properties:
+            RestApiId: !Ref HuskySheltersAPI
+            Path: "/get-table-items"
+            Method: GET
+      Policies:
+        - DynamoDBReadPolicy:
             TableName: !Ref Table
   Table:
     Type: AWS::DynamoDB::Table
@@ -139,9 +156,6 @@ Resources:
         ViewerCertificate:
           CloudFrontDefaultCertificate: true      
           
-
-                 
-
 Outputs:
   S3ImagesBucketName:
     Description: BucketName
