@@ -53,6 +53,13 @@ Resources:
     Type: 'AWS::S3::Bucket'
     Properties:
       BucketName: animalimagesbucket
+      AccessControl: 'Private'
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
 
   WebsiteAdoptionBucket:
     Type: 'AWS::S3::Bucket'
