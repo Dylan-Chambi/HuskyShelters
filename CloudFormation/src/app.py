@@ -1,3 +1,4 @@
+import re
 import boto3
 import csv
 import json
@@ -65,6 +66,25 @@ def get_table_items(event, context):
         'body': json.dumps(response['Items'])
     }
 
+def get_images_by_id(event, context):
+    id = event['pathParameters']['id']
+    urls= []
+    result = s3.list_objects_v2(Bucket='animalimagesbucket',Prefix='folder_'+id+'/')
+    if 'Contents' in result:
+        for obj in result.get('Contents'):
+            print(obj.get('Key'))
+            url = s3.generate_presigned_url(
+                ClientMethod='get_object',
+                Params={
+                    'Bucket': 'animalimagesbucket',
+                    'Key': obj.get('Key')
+                }
+            )
+            urls.append(url)
+    return {
+        'statusCode': 200,
+        'body': json.dumps(urls)
+    }
 
 def lambda_handler(event, context):
     return {

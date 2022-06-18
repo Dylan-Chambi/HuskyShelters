@@ -21,3 +21,20 @@ paths:
         httpMethod: "POST" #never changes
         contentHandling: "CONVERT_TO_TEXT"
         type: "aws_proxy"
+  /get-images/{id}:
+    get:
+      summary: this endpoint allows you to get a collection of images by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The animal's id
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetImagesByID.Arn}/invocations
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST" #never changes
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws_proxy"

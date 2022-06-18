@@ -47,6 +47,23 @@ Resources:
       Policies:
         - DynamoDBReadPolicy:
             TableName: !Ref Table
+  GetImagesByID:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: get-images-by-id-husky-shelters
+      Handler: app.get_images_by_id
+      Runtime: python3.9
+      CodeUri: build
+      Events:
+        GetImagesByID:
+          Type: Api
+          Properties:
+            RestApiId: !Ref HuskySheltersAPI
+            Path: "/get-images/{id}"
+            Method: GET
+      Policies:
+        - S3ReadPolicy:
+            BucketName: !Ref AnimalImagesBucket
   Table:
     Type: AWS::DynamoDB::Table
     Properties:
