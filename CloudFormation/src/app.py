@@ -96,6 +96,14 @@ def excel_processing_handler(event, context):
             type = row[6]
             age = row[7]
 
+        formatted_images = []    
+
+        
+        for i in range(len(images.split(','))):
+            formatted_images.append({"S": images.split(',')[i]})
+
+        print(formatted_images)    
+
 
         add_to_dynamo = dynamodb.put_item(
 
@@ -107,7 +115,7 @@ def excel_processing_handler(event, context):
                 'health' : {'S': health},
                 'status' : {'S': status},
                 'location' : {'S': location},
-                'images' : {'S': images},
+                'images' : {'L': formatted_images},
                 'type' : {'S': type},
                 'age' : {'S': age}
             
