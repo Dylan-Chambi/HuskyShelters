@@ -127,8 +127,3 @@ def excel_processing_handler(event, context):
         'statusCode': 200,
         'body': "Hello World"
     }
-
-
-
-
-
