@@ -2,6 +2,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import Gato from "./gato.jpg";
 import Logo from "./logo.png";
+import Logo2 from "./logo2.png";
 const ContactUs = () => {
     return (
         <div>
@@ -12,8 +13,8 @@ const ContactUs = () => {
                             className="mr-3 "
                             src={Logo}
                             alt=""
-                            width="48"
-                            height="48"
+                            width="60"
+                            height="60"
                         />
                         Husky Shelters
                     </h3>
@@ -47,9 +48,17 @@ const ContactUs = () => {
                                     Find a Pet
                                 </a>
                             </Link>
+                            <img
+                            className="mr-3 "
+                            src={Logo2}
+                            alt=""
+                            width="60"
+                            height="60"
+                        />
                         </nav>
                     </a>
                 </a>
+                
             </nav>
 
             <main role="main" className="bg-warning">

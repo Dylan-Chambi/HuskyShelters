@@ -1,56 +1,69 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import Logo from "./logo.png";
+import Logo2 from "./logo2.png";
 import UploadButton from "./UploadButton";
-const RehomePet = () => {
-    return (
-        <div>
-            <nav className="navbar bg-warning fixed-top">
-                <div className="navbard-flex justify-content-between ">
-                    <h3>
-                        <img
-                            className="mr-3 "
-                            src={Logo}
-                            alt=""
-                            width="48"
-                            height="48"
-                        />
-                        Husky Shelters
-                    </h3>
-                </div>
-                <a className="navbar-brand justify-content-between" href="/#">
-                    <a className="navbar-brand" href="/#">
-                        <nav className="nav nav-underline">
-                            <Link to="/">
-                                <a className="nav-link active " href="/#">
-                                    Home
-                                </a>
-                            </Link>
-                            <Link to="/contact">
-                                <a className="nav-link active " href="/#">
-                                    Contact Us
-                                </a>
-                            </Link>
-                            <Link to="/about">
-                                <a className="nav-link active" href="/#">
-                                    About Us
-                                </a>
-                            </Link>
-                            <Link to="/rehome">
-                                <a className="nav-link active" href="/#">
-                                    Rehome a Pet
-                                </a>
-                            </Link>
-                            <Link to="/find">
-                                <a className="nav-link active" href="/#">
-                                    Find A Pet
-                                </a>
-                            </Link>
-                        </nav>
-                    </a>
+//import useWindowSize from "./windowSize";
+import "bootstrap";
+import "bootstrap/dist/css/bootstrap.css"; // Import precompiled Bootstrap css
+import "@fortawesome/fontawesome-free/css/all.css";
+import "./styles.css";
+const RehomePet: React.FC = () => {
+  return (
+    <div>
+      <nav className="navbar bg-warning fixed-top">
+        <div className="navbard-flex justify-content-between ">
+          <h3>
+            <img
+              className="mr-3 "
+              src={Logo}
+              alt=""
+              width="60"
+              height="60"
+            />
+            Husky Shelters
+          </h3>
+        </div>
+        <a className="navbar-brand justify-content-between" href="/#">
+          <a className="navbar-brand" href="/#">
+            <nav className="nav nav-underline">
+              <Link to="/">
+                <a className="nav-link active " href="/#">
+                  Home
                 </a>
-            </nav>
+              </Link>
+              <Link to="/contact">
+                <a className="nav-link active " href="/#">
+                  Contact Us
+                </a>
+              </Link>
 
+              <Link to="/about">
+                <a className="nav-link active" href="/#">
+                  About Us
+                </a>
+              </Link>
+              <Link to="/rehome">
+                <a className="nav-link active" href="/#">
+                  Rehome a Pet
+                </a>
+              </Link>
+              <Link to="/find">
+                <a className="nav-link active" href="/#">
+                  Find a Pet
+                </a>
+              </Link>
+              <img
+              className="mr-3 "
+              src={Logo2}
+              alt=""
+              width="60"
+              height="60"
+            />
+            </nav>
+          </a>
+        </a>
+      </nav>
             <main role="main" className="bg-warning">
                 <div className=" my-3 p-3"></div>
                 <div className="d-flex align-items-center flex-column" >
@@ -103,7 +116,7 @@ const RehomePet = () => {
                             <UploadButton />
                             <div className=" my-3 p-3"></div>
                             <p className="text-center">If you complete all the requirements, please press the button below.</p>
-                    <Link to="/home">
+                    <Link to="/">
                         
                     <button type="button" className="btn btn-dark  mx-auto text-center">
                       Submit

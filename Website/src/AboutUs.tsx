@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import Logo from "./logo.png";
+import Logo2 from "./logo2.png";
 const AboutUs = () => {
     return (
         <div>
@@ -11,8 +12,8 @@ const AboutUs = () => {
                             className="mr-3 "
                             src={Logo}
                             alt=""
-                            width="48"
-                            height="48"
+                            width="60"
+                            height="60"
                         />
                         Husky Shelters
                     </h3>
@@ -20,7 +21,7 @@ const AboutUs = () => {
                 <a className="navbar-brand justify-content-between" href="/#">
                     <a className="navbar-brand" href="/#">
                         <nav className="nav nav-underline">
-                            <Link to="/home">
+                            <Link to="/">
                                 <a className="nav-link active " href="/#">
                                     Home
                                 </a>
@@ -45,9 +46,17 @@ const AboutUs = () => {
                                     Find a Pet
                                 </a>
                             </Link>
+                            <img
+                                className="mr-3 "
+                                src={Logo2}
+                                alt=""
+                                width="60"
+                                height="60"
+                            />
                         </nav>
                     </a>
                 </a>
+
             </nav>
 
             <main role="main" className="bg-warning">

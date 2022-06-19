@@ -6,7 +6,7 @@ import "bootstrap/dist/css/bootstrap.css"; // Import precompiled Bootstrap css
 import "@fortawesome/fontawesome-free/css/all.css";
 import "./styles.css";
 import Logo from "./logo.png";
-
+import Logo2 from "./logo2.png";
 const Layout: React.FC = () => {
   return (
     <div>
@@ -17,8 +17,8 @@ const Layout: React.FC = () => {
               className="mr-3 "
               src={Logo}
               alt=""
-              width="48"
-              height="48"
+              width="60"
+              height="60"
             />
             Husky Shelters
           </h3>
@@ -52,6 +52,13 @@ const Layout: React.FC = () => {
                   Find a Pet
                 </a>
               </Link>
+              <img
+              className="mr-3 "
+              src={Logo2}
+              alt=""
+              width="60"
+              height="60"
+            />
             </nav>
           </a>
         </a>

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import Logo from "./logo.png";
+import Logo2 from "./logo2.png";
 import Dogs from "./dogs.png";
 import Cats from "./cats.png";
 const FindAPet = () => {
@@ -48,10 +49,18 @@ const FindAPet = () => {
                                     Find a Pet
                                 </a>
                             </Link>
+                            <img
+                            className="mr-3 "
+                            src={Logo2}
+                            alt=""
+                            width="60"
+                            height="60"
+                        />
                         </nav>
+                        
                     </a>
                 </a>
-
+                
             </nav>
             <main role="main" className="bg-warning">
                 <div className=" my-3 p-3"></div>
@@ -71,20 +80,20 @@ const FindAPet = () => {
                         </button>
                     </Link>
 
-                   
-                        <Link to="/find">
-                            <button type="button" className="btn btn-dark">
-                                <img
-                                    className="rounded float-end"
-                                    src={Cats}
-                                    alt=""
-                                    width="350"
-                                    height="250"
-                                />
-                                <p className="font-weight-bold"> CATS</p>
-                            </button>
-                        </Link>
-                   
+
+                    <Link to="/find">
+                        <button type="button" className="btn btn-dark">
+                            <img
+                                className="rounded float-end"
+                                src={Cats}
+                                alt=""
+                                width="350"
+                                height="250"
+                            />
+                            <p className="font-weight-bold"> CATS</p>
+                        </button>
+                    </Link>
+
                 </div>
 
                 <div className=" my-5 p-5"></div>
