@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 //import useWindowSize from "./windowSize";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.css"; // Import precompiled Bootstrap css
@@ -53,9 +54,11 @@ const Layout: React.FC = () => {
                   <h3> & private owners!</h3>
                 </div>
                 <div className="col-md-12 text-center">
-                  <button type="button" className="btn btn-dark">
-                    Adopt Here!
-                  </button>
+                  <Link to="/contact">
+                    <button type="button" className="btn btn-dark">
+                      Adopt Here!
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>
