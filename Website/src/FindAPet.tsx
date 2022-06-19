@@ -81,7 +81,7 @@ const FindAPet = () => {
                     </Link>
 
 
-                    <Link to="/find">
+                    <Link to="/cats">
                         <button type="button" className="btn btn-dark">
                             <img
                                 className="rounded float-end"

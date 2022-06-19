@@ -1,32 +1,20 @@
 import * as React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Logo from "./logo.png";
 import Logo2 from "./logo2.png";
-import Dog1 from "./dog1.jpg";
+import Dog1 from "./petAnimal1.jpg";
+import Dog2 from "./dog2.png";
 import axios from "axios";
-const Pet = () => {
-    const location = useLocation();
-
-    const [animal, setAnimal] = React.useState<any>({});
+const Cats = () => {
+    const [petAnimals, setCats] = React.useState<Array<any>>([]);
     React.useEffect(() => {
-        const pet: any = location.state;
-        setAnimal(pet.petAnimal);
-        console.log(pet);
-    }, [location]);
-
-
-    const [animalCollection, setAnimalCollection] = React.useState<Array<any>>([]);
-    React.useEffect(() => {
-        axios.get("https://i42ngdowva.execute-api.us-east-1.amazonaws.com/aws/get-images/" + animal.id).then(res => {
-            setAnimalCollection(res.data);
-
-        }).catch(err => {
-            console.log(err);
-        });
-    }, [animal]);
-
-
-
+    axios.get("https://i42ngdowva.execute-api.us-east-1.amazonaws.com/aws/get-table-items").then(res => {
+        setCats(res.data);
+       
+    }).catch(err => {
+        console.log(err);
+    });
+    }, []);
     return (
         <div className="bg-warning ">
             <nav className="navbar bg-warning fixed-top">
@@ -86,49 +74,27 @@ const Pet = () => {
             <main role="main" className="bg-warning">
                 <div className=" my-3 p-3"></div>
                 <div className=" my-3 p-3"></div>
-                <h1 className="text-center font-weight-bold"> Hi my Name is {animal.name} </h1>
-                <div className="row d-flex justify-content-around my-3 p-3">
-                    <div className="card bg-dark card-center my-2 p-2" style={{ width: '20rem', height: '20rem' }}>
-                        <img src={Dog1} className="card-img-top" alt="dog1"  ></img>
+                <h1 className="text-center"> OUR LOVELY DOGS! </h1>
+                <div className="row d-flex justify-content-around">
+                {petAnimals.filter((cat: any) => {
+                    console.log(cat.type);
+                    return cat.type === "Cat";
+                }).map((petAnimal: any) => {
+
+                    return (
+                        <div className="card bg-dark " style={{ width: '12rem', height: '18rem' }}>
+                        <img src={Dog2} className="card-img-top" alt="petAnimal2"  ></img>
+
+                        <div className="card-body">
+                            <h5 className="card-title text-center text-light">{petAnimal.name}</h5>
+                            <Link to= "/pet" state={{petAnimal: petAnimal}}>
+                            <a href="#" className="btn btn-warning text-dark">ADOPT NOW!</a>
+                            </Link>
+                        </div>
                     </div>
-                    <div className="card bg-dark card-center" style={{ width: '60rem', height: '20rem' }}>
-                        <h1 className="text-warning">Facts</h1>
-                        <h1 className="text-warning">about me!</h1>
-                        <h1 className="text-warning">----------------------</h1>
-                        <h4 className="text-light font-weight-bold">HEALTH STATUS:   {animal.health}</h4>
-                        <h4 className="text-light font-weight-bold">AGE:   {animal.age}</h4>
-                        <h4 className="text-light font-weight-bold">LOCATION:   {animal.location}</h4>
-                        <h1 className="text-warning">----------------------</h1>
-                    </div>
-                </div>
-                <h2 className="p-4 font-weight-bold">More about me...</h2>
-                <div className="row d-flex justify-content-around my-3 p-3">
+                   
 
-
-                    {animalCollection.map((photo: any) => {
-
-                        return (
-                            <div className="card bg-dark card-center my-3 p-3" style={{ width: '20rem', height: '20rem' }}>
-                                <img src={photo} className="card-img-top" alt="dog2"  ></img>
-                            </div>
-
-
-
-
-
-                        )
-                    })}
-
-
-
-
-                </div>
-                <div className="row d-flex justify-content-around my-3 p-3">
-                    <Link to="/">
-                        <button type="button" className="btn btn-dark btn-lg">
-                            CONTACT US!
-                        </button>
-                    </Link>
+                )})}
                 </div>
                 <div className=" my-3 p-3"></div>
                 <div className=" my-3 p-3"></div>
@@ -141,4 +107,4 @@ const Pet = () => {
     );
 
 }
-export default Pet;
+export default Cats;

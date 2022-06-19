@@ -2,11 +2,10 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import Logo from "./logo.png";
 import Logo2 from "./logo2.png";
-import Dog1 from "./dog1.jpg";
 import Dog2 from "./dog2.png";
 import axios from "axios";
 const Dogs = () => {
-    const [dogs, setDogs] = React.useState<Array<any>>([]);
+    const [petAnimals, setDogs] = React.useState<Array<any>>([]);
     React.useEffect(() => {
     axios.get("https://i42ngdowva.execute-api.us-east-1.amazonaws.com/aws/get-table-items").then(res => {
         setDogs(res.data);
@@ -76,18 +75,18 @@ const Dogs = () => {
                 <div className=" my-3 p-3"></div>
                 <h1 className="text-center"> OUR LOVELY DOGS! </h1>
                 <div className="row d-flex justify-content-around">
-                {dogs.filter((dog: any) => {
-                    console.log(dog.type);
-                    return dog.type === "Dog";
-                }).map((dog: any) => {
+                {petAnimals.filter((petAnimal: any) => {
+                    console.log(petAnimal.type);
+                    return petAnimal.type === "Dog";
+                }).map((petAnimal: any) => {
 
                     return (
                         <div className="card bg-dark " style={{ width: '12rem', height: '18rem' }}>
-                        <img src={Dog2} className="card-img-top" alt="dog2"  ></img>
+                        <img src={Dog2} className="card-img-top" alt="petAnimal2"  ></img>
 
                         <div className="card-body">
-                            <h5 className="card-title text-center text-light">{dog.name}</h5>
-                            <Link to= "/pet" state={{dog: dog}}>
+                            <h5 className="card-title text-center text-light">{petAnimal.name}</h5>
+                            <Link to= "/pet" state={{petAnimal: petAnimal}}>
                             <a href="#" className="btn btn-warning text-dark">ADOPT NOW!</a>
                             </Link>
                         </div>
