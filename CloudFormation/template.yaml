@@ -64,6 +64,23 @@ Resources:
       Policies:
         - S3ReadPolicy:
             BucketName: !Ref AnimalImagesBucket
+  UploadImageByID:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: upload-image-by-id-husky-shelters
+      Handler: app.upload_image_by_id
+      Runtime: python3.9
+      CodeUri: build
+      Events:
+        UploadImageByID:
+          Type: Api
+          Properties:
+            RestApiId: !Ref HuskySheltersAPI
+            Path: "/upload-image/{id}"
+            Method: GET
+      Policies:
+        - S3WritePolicy:
+            BucketName: !Ref AnimalImagesBucket
   Table:
     Type: AWS::DynamoDB::Table
     Properties:

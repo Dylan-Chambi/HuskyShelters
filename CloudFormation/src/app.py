@@ -14,6 +14,11 @@ def update_item(event, context):
     if 'id' not in body:
         return {
             "statusCode": 400,
+            'headers': {
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': '*'
+        },
             "body": json.dumps("Missing id")
         }
 
@@ -43,6 +48,11 @@ def update_item(event, context):
     except Exception:
         return {
             "statusCode": 400,
+            'headers': {
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': '*'
+        },
             "body": "Invalid attributes"
         }
 
@@ -50,11 +60,21 @@ def update_item(event, context):
     if(response['ResponseMetadata']['HTTPStatusCode'] == 200):
         return {
             'statusCode': 200,
+            'headers': {
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': '*'
+        },
             'body': json.dumps("Item updated successfully")
         }
     else:
         return {
             'statusCode': 400,
+            'headers': {
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': '*'
+        },
             'body': json.dumps("Error updating item")
         }
 
@@ -63,6 +83,11 @@ def get_table_items(event, context):
     response = table.scan()
     return {
         'statusCode': 200,
+        'headers': {
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+        },
         'body': json.dumps(response['Items'])
     }
 
@@ -83,13 +108,28 @@ def get_images_by_id(event, context):
             urls.append(url)
     return {
         'statusCode': 200,
+        'headers': {
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': '*'
+        },
         'body': json.dumps(urls)
     }
 
-def lambda_handler(event, context):
+def upload_image_by_id(event, context):
+    response = s3.generate_presigned_post(
+        Bucket='animalimagesbucket',
+        Key = 'folder_'+event['pathParameters']['id']+'/'+'test.jpg',
+        ExpiresIn = 10
+    )
     return {
         'statusCode': 200,
-        'body': "Hello World"
+        'headers': {
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': '*'
+        },
+        'body': json.dumps(response)
     }
 
 def excel_processing_handler(event, context):
