@@ -104,6 +104,28 @@ Resources:
     Type: 'AWS::S3::Bucket'
     Properties:
       BucketName: animalimagesbucket
+      AccessControl: 'Private'
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders:
+              - "*"
+            AllowedMethods:
+              - GET
+              - PUT
+              - POST
+            AllowedOrigins:
+              - "*"
+                     
+
+            
+            
+            
+
 
   WebsiteAdoptionBucket:
     Type: 'AWS::S3::Bucket'
