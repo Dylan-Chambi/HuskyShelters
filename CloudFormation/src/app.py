@@ -1,9 +1,9 @@
 import boto3
 import csv
 import json
-import uuid
-from urllib.parse import unquote_plus
-import matplotlib.pyplot as plt
+from io import BytesIO
+from os import path
+from PIL import Image
 
 table = boto3.resource('dynamodb').Table('husky_shelter')
 s3 = boto3.client('s3')
@@ -196,6 +196,42 @@ def scale(im, nR, nC):
 
 def s3_images_handler(event, context):
   for record in event['Records']:
+
+        object_key = record['s3']['object']['key']
+        extension = path.splitext(object_key)[1].lower()
+
+        # Grabs the source file
+        obj = s3.Object(
+            bucket_name='animalimagesbucket',
+            key=object_key,
+        )
+        obj_body = obj.get()['Body'].read()
+    
+        # Checking the extension and
+        # Defining the buffer format
+        if extension in ['.jpeg', '.jpg', '.png']:
+            format = 'JPEG'
+
+        if object_key == 'perrito.jpg':
+            # Image resize
+            image = Image.open(BytesIO(obj_body))
+            output_size = (1000, 1000)
+            image.thumbnail(output_size) # image.thumbnail preserves aspect ratio, does does not exceed specified size, 
+            buffer = BytesIO()
+            image.save(buffer, format)
+            buffer.seek(0)
+
+            # Upload resized image to destination bucket
+            obj = s3.Object(
+                bucket_name='animalimagesbucket',
+                key=f"{object_key}",
+            )
+            obj.put(Body=buffer)
+            print('Image resized and uploaded to S3')
+        else :
+            print('Image not resized')    
+
+'''
         bucket = record['s3']['bucket']['name']
         key = unquote_plus(record['s3']['object']['key'])
         tmpkey = key.replace('/', '')
@@ -203,11 +239,9 @@ def s3_images_handler(event, context):
         upload_path = '/tmp/resized-{}'.format(tmpkey)
         if key == 'perrito.jpg':
             s3.download_file(bucket, key, download_path)
-            im = plt.imread(download_path)
-            res = scale(im, 500, 500)
-            plt.imsave(upload_path, res)
+            Image.open(download_path).resize((100, 100)).save(upload_path)
             s3.upload_file(upload_path, bucket, 'resized-{}'.format(tmpkey))
             print('Image resized and uploaded to S3')
         else :
             print('Image not resized')    
-        
+'''
