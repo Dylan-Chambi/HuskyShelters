@@ -144,7 +144,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: app.excel_processing_handler
-      Runtime: python3.6
+      Runtime: python3.9
       CodeUri: build
       Events:
         ProcessExcel:
@@ -164,10 +164,23 @@ Resources:
         - DynamoDBCrudPolicy:
             TableName: 'husky_shelter'
 
-
-
-        
-       
+  S3ImagesConversion:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: s3-images-conversion-husky-shelters
+      Handler: app.s3_images_handler
+      Runtime: python3.9
+      CodeUri: build
+      Events:
+        ConverImages:
+          Type: S3
+          Properties:
+            Bucket:
+              Ref: "AnimalImagesBucket"
+            Events: s3:ObjectCreated:*
+      Policies:
+        - S3CrudPolicy:
+            BucketName: 'animalimagesbucket'
 
   CloudFrontOriginIdentity:
     Type: 'AWS::CloudFront::CloudFrontOriginAccessIdentity'

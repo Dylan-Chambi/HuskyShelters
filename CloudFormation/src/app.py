@@ -1,7 +1,9 @@
-import re
 import boto3
 import csv
 import json
+import uuid
+from urllib.parse import unquote_plus
+import matplotlib.pyplot as plt
 
 table = boto3.resource('dynamodb').Table('husky_shelter')
 s3 = boto3.client('s3')
@@ -186,3 +188,26 @@ def excel_processing_handler(event, context):
         'statusCode': 200,
         'body': "Hello World"
     }
+def scale(im, nR, nC):
+    number_rows = len(im)     
+    number_columns = len(im[0]) 
+    return [[ im[int(number_rows * r / nR)][int(number_columns * c / nC)]  
+                 for c in range(nC)] for r in range(nR)]
+
+def s3_images_handler(event, context):
+  for record in event['Records']:
+        bucket = record['s3']['bucket']['name']
+        key = unquote_plus(record['s3']['object']['key'])
+        tmpkey = key.replace('/', '')
+        download_path = '/tmp/{}{}'.format(uuid.uuid4(), tmpkey)
+        upload_path = '/tmp/resized-{}'.format(tmpkey)
+        if key == 'perrito.jpg':
+            s3.download_file(bucket, key, download_path)
+            im = plt.imread(download_path)
+            res = scale(im, 500, 500)
+            plt.imsave(upload_path, res)
+            s3.upload_file(upload_path, bucket, 'resized-{}'.format(tmpkey))
+            print('Image resized and uploaded to S3')
+        else :
+            print('Image not resized')    
+        
