@@ -18,7 +18,7 @@ Resources:
     Properties:
       FunctionName: update-item-husky-shelters
       Handler: app.update_item
-      Runtime: python3.9
+      Runtime: python3.7
       CodeUri: build
       Events:
         UpdateItem:
@@ -35,7 +35,7 @@ Resources:
     Properties:
       FunctionName: get-table-items-husky-shelters
       Handler: app.get_table_items
-      Runtime: python3.9
+      Runtime: python3.7
       CodeUri: build
       Events:
         GetTableItems:
@@ -52,7 +52,7 @@ Resources:
     Properties:
       FunctionName: get-images-by-id-husky-shelters
       Handler: app.get_images_by_id
-      Runtime: python3.9
+      Runtime: python3.7
       CodeUri: build
       Events:
         GetImagesByID:
@@ -69,7 +69,7 @@ Resources:
     Properties:
       FunctionName: upload-image-by-id-husky-shelters
       Handler: app.upload_image_by_id
-      Runtime: python3.9
+      Runtime: python3.7
       CodeUri: build
       Events:
         UploadImageByID:
@@ -144,7 +144,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: app.excel_processing_handler
-      Runtime: python3.9
+      Runtime: python3.7
       CodeUri: build
       Events:
         ProcessExcel:
@@ -169,7 +169,7 @@ Resources:
     Properties:
       FunctionName: s3-images-conversion-husky-shelters
       Handler: app.s3_images_handler
-      Runtime: python3.9
+      Runtime: python3.7
       CodeUri: build
       Events:
         ConverImages:

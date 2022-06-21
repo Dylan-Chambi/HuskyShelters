@@ -1,2 +1,2 @@
 boto3
-Pillow
+Pillow == 6.0.0

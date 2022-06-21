@@ -1,10 +1,9 @@
 import boto3
+from PIL import Image
+import PIL.Image
 import csv
 import json
-from io import BytesIO
-from os import path
-from PIL import Image
-
+     
 table = boto3.resource('dynamodb').Table('husky_shelter')
 s3 = boto3.client('s3')
 dynamodb = boto3.client('dynamodb', region_name = 'us-east-1')
@@ -188,14 +187,30 @@ def excel_processing_handler(event, context):
         'statusCode': 200,
         'body': "Hello World"
     }
-def scale(im, nR, nC):
-    number_rows = len(im)     
-    number_columns = len(im[0]) 
-    return [[ im[int(number_rows * r / nR)][int(number_columns * c / nC)]  
-                 for c in range(nC)] for r in range(nR)]
+def resize_image(image_path, resized_path):
+    with Image.open(image_path) as image:
+        image.thumbnail((128, 128))
+        image.save(resized_path)
 
 def s3_images_handler(event, context):
-  for record in event['Records']:
+    for record in event['Records']:
+        bucket = record['s3']['bucket']['name']
+        key = record['s3']['object']['key']
+        tmpkey = key.replace('/', '')
+        download_path = '/tmp/{}{}'.format("aaaaaaaaaaaaaaaaaaaaaa", tmpkey)
+        upload_path = '/tmp/resized-{}'.format(tmpkey)
+        if key == 'perrito.jpg':
+            s3.download_file(bucket, key, download_path)
+            resize_image(download_path, upload_path)
+            s3.upload_file(upload_path, bucket, 'resized-{}'.format(tmpkey))
+            print('Image resized and uploaded to S3')
+        else :
+            print('Image not resized')
+    return {
+        'statusCode': 200,
+        'body': "Hello World"
+    }
+    """
 
         object_key = record['s3']['object']['key']
         extension = path.splitext(object_key)[1].lower()
@@ -231,17 +246,4 @@ def s3_images_handler(event, context):
         else :
             print('Image not resized')    
 
-'''
-        bucket = record['s3']['bucket']['name']
-        key = unquote_plus(record['s3']['object']['key'])
-        tmpkey = key.replace('/', '')
-        download_path = '/tmp/{}{}'.format(uuid.uuid4(), tmpkey)
-        upload_path = '/tmp/resized-{}'.format(tmpkey)
-        if key == 'perrito.jpg':
-            s3.download_file(bucket, key, download_path)
-            Image.open(download_path).resize((100, 100)).save(upload_path)
-            s3.upload_file(upload_path, bucket, 'resized-{}'.format(tmpkey))
-            print('Image resized and uploaded to S3')
-        else :
-            print('Image not resized')    
-'''
+    """
