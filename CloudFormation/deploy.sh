@@ -56,7 +56,13 @@ if [[ $d -eq 1 ]]; then
     --stack-name husky-shelter-stack \
     --capabilities CAPABILITY_NAMED_IAM
 
-  aws s3 cp ./src/animalAdoptionData.csv s3://animaldatabucket346253/  
+  aws s3 cp ./src/animalAdoptionData.csv s3://animaldatabucket346253/
+  cd ../Website
+  npm i
+  npm run build
+  cd build
+  aws s3 cp ./ s3://websiteadoptionbucket/ --recursive  
+
+  
 
 fi
-
