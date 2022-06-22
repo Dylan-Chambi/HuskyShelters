@@ -1,3 +1,4 @@
+import random
 import boto3
 from PIL import Image
 import PIL.Image
@@ -16,9 +17,11 @@ def update_item(event, context):
         return {
             "statusCode": 400,
             'headers': {
-            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Headers': '*',
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': '*'
+            'Access-Control-Allow-Methods': '*',
+            "Access-Control-Allow-Credentials" : True,
+            'Content-Type': 'application/json'
         },
             "body": json.dumps("Missing id")
         }
@@ -50,9 +53,11 @@ def update_item(event, context):
         return {
             "statusCode": 400,
             'headers': {
-            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Headers': '*',
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': '*'
+            'Access-Control-Allow-Methods': '*',
+            "Access-Control-Allow-Credentials" : True,
+            'Content-Type': 'application/json'
         },
             "body": "Invalid attributes"
         }
@@ -62,9 +67,11 @@ def update_item(event, context):
         return {
             'statusCode': 200,
             'headers': {
-            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Headers': '*',
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': '*'
+            'Access-Control-Allow-Methods': '*',
+            "Access-Control-Allow-Credentials" : True,
+            'Content-Type': 'application/json'
         },
             'body': json.dumps("Item updated successfully")
         }
@@ -72,9 +79,11 @@ def update_item(event, context):
         return {
             'statusCode': 400,
             'headers': {
-            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Headers': '*',
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': '*'
+            'Access-Control-Allow-Methods': '*',
+            "Access-Control-Allow-Credentials" : True,
+            'Content-Type': 'application/json'
         },
             'body': json.dumps("Error updating item")
         }
@@ -112,25 +121,9 @@ def get_images_by_id(event, context):
         'headers': {
             'Access-Control-Allow-Headers': 'Content-Type',
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': '*'
+            'Access-Control-Allow-Methods': 'GET'
         },
         'body': json.dumps(urls)
-    }
-
-def upload_image_by_id(event, context):
-    response = s3.generate_presigned_post(
-        Bucket='animalimagesbucket',
-        Key = 'folder_'+event['pathParameters']['id']+'/'+'test.jpg',
-        ExpiresIn = 10
-    )
-    return {
-        'statusCode': 200,
-        'headers': {
-            'Access-Control-Allow-Headers': 'Content-Type',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': '*'
-        },
-        'body': json.dumps(response)
     }
 
 def excel_processing_handler(event, context):
@@ -187,63 +180,35 @@ def excel_processing_handler(event, context):
         'statusCode': 200,
         'body': "Hello World"
     }
-def resize_image(image_path, resized_path):
+def resize_image(image_path, resized_path, high, width):
     with Image.open(image_path) as image:
-        image.thumbnail((128, 128))
+        image.thumbnail((high, width))
         image.save(resized_path)
 
 def s3_images_handler(event, context):
     for record in event['Records']:
         bucket = record['s3']['bucket']['name']
         key = record['s3']['object']['key']
-        tmpkey = key.replace('/', '')
-        download_path = '/tmp/{}{}'.format("aaaaaaaaaaaaaaaaaaaaaa", tmpkey)
-        upload_path = '/tmp/resized-{}'.format(tmpkey)
-        if key == 'perrito.jpg':
+        print(record)
+        name = key.split('/')[-1]
+        uid = random.randint(1, 100000)
+        download_path = f'/tmp/{uid}{name}'
+        upload_path_500 = f'/tmp/resized500-{name}'
+        upload_path_50 = f'/tmp/resized50-{name}'
+        metadata = s3.head_object(Bucket=bucket, Key=key)['Metadata']
+        print(metadata)
+        if key.startswith('uploads/'):
             s3.download_file(bucket, key, download_path)
-            resize_image(download_path, upload_path)
-            s3.upload_file(upload_path, bucket, 'resized-{}'.format(tmpkey))
+            resize_image(download_path, upload_path_500, 500, 500)
+            resize_image(download_path, upload_path_50, 50, 50)
+            s3.upload_file(upload_path_500, bucket, f'folder_{metadata["id"]}/{name}')
+            s3.upload_file(upload_path_50, bucket, f'thumbnails/{metadata["id"]}.jpeg')
             print('Image resized and uploaded to S3')
         else :
             print('Image not resized')
+        if not (key.startswith('folder_') or key.startswith('thumbnails/')):
+            s3.delete_object(Bucket=bucket, Key=key)
     return {
         'statusCode': 200,
         'body': "Hello World"
     }
-    """
-
-        object_key = record['s3']['object']['key']
-        extension = path.splitext(object_key)[1].lower()
-
-        # Grabs the source file
-        obj = s3.Object(
-            bucket_name='animalimagesbucket',
-            key=object_key,
-        )
-        obj_body = obj.get()['Body'].read()
-    
-        # Checking the extension and
-        # Defining the buffer format
-        if extension in ['.jpeg', '.jpg', '.png']:
-            format = 'JPEG'
-
-        if object_key == 'perrito.jpg':
-            # Image resize
-            image = Image.open(BytesIO(obj_body))
-            output_size = (1000, 1000)
-            image.thumbnail(output_size) # image.thumbnail preserves aspect ratio, does does not exceed specified size, 
-            buffer = BytesIO()
-            image.save(buffer, format)
-            buffer.seek(0)
-
-            # Upload resized image to destination bucket
-            obj = s3.Object(
-                bucket_name='animalimagesbucket',
-                key=f"{object_key}",
-            )
-            obj.put(Body=buffer)
-            print('Image resized and uploaded to S3')
-        else :
-            print('Image not resized')    
-
-    """
