@@ -27,7 +27,9 @@ const getUploadURL = async function(event) {
       "statusCode": 200,
       "isBase64Encoded": false,
       "headers": {
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token",
+        "Access-Control-Allow-Methods": "GET, POST, PATCH, PUT, DELETE, OPTIONS"
       },
       "body": JSON.stringify({
           "uploadURL": uploadURL,
