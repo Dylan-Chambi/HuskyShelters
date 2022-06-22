@@ -68,9 +68,9 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: upload-image-by-id-husky-shelters
-      Handler: app.upload_image_by_id
-      Runtime: python3.7
-      CodeUri: build
+      Handler: api.upload_image_by_id
+      Runtime: nodejs14.x
+      CodeUri: src
       Events:
         UploadImageByID:
           Type: Api
