@@ -64,12 +64,13 @@ const FileUploader: React.FC<Props> = ({ file, setFile, onUpload }) => {
 
         dragDropArea.current?.addEventListener('drop', (e: DragEvent) => {
             e.preventDefault();
-            trySetFile(e.dataTransfer?.files!);                                          // trySetFile generates a warning on compilation
+            trySetFile(e.dataTransfer?.files!);
         });
         inputFile.current?.addEventListener('change', (e: Event) => {
             e.preventDefault();
             trySetFile((e.target as HTMLInputElement).files!);
         })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [inputFile, dragDropArea]);
 
     return (
