@@ -4,6 +4,7 @@ import Logo from "./logo.png";
 import Logo2 from "./logo2.png";
 import Dog1 from "./dog1.jpg";
 import axios from "axios";
+import UploadButton from "./UploadButton";
 const Pet = () => {
     const location = useLocation();
 
@@ -119,15 +120,17 @@ const Pet = () => {
 
                         )
                     })}
-                   
-
+                    <div className="card bg-dark card-center my-3 p-3" style={{ width: '20rem', height: '20rem' }}>
+                               
+                    </div>
                 </div>
                 <div className="row d-flex justify-content-around my-3 p-3">
-                    <Link to="/edit" state={{animal: animal}}>
+                    <Link to="/edit" state={{ animal: animal }}>
                         <button type="button" className="btn btn-dark btn-lg">
                             EDIT INFORMATION!
                         </button>
                     </Link>
+                 
                     <Link to="/">
                         <button type="button" className="btn btn-dark btn-lg">
                             CONTACT US!

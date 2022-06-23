@@ -18,17 +18,18 @@ const EditInfo = () => {
 const saveChanges=()=>{
     console.log(petName);
     console.log(animal2.id);
-    axios.post("https://ue1spf4hoa.execute-api.us-east-1.amazonaws.com/aws/update-item", {
+    fetch("https://ue1spf4hoa.execute-api.us-east-1.amazonaws.com/aws/update-item", {
         headers:{ 
-            "Content-Type": "application/json", 
-            "Host": "192.168.1.212:3000",
-            "Content-Length": "0",
+            "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*"
+            
     },
-    body:{
+        method: "POST",
+    mode: "no-cors",
+    body: JSON.stringify({
         "id": animal2.id,
         "name": petName
-    }}).then(res => {
+    })}).then(res => {
         
         alert("Changes saved");
         
