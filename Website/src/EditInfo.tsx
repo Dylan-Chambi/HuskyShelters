@@ -13,6 +13,10 @@ const EditInfo = () => {
         setAnimal2(pet.animal);
         console.log(pet);
     }, [location]);
+   
+    const [petAge, setPetAge] = React.useState("");
+    const [petHealth, setPetHealth] = React.useState("");
+    const [petLocation, setPetLocation] = React.useState("");
     const [petName, setPetName] = React.useState("");
 
 const saveChanges=()=>{
@@ -28,7 +32,10 @@ const saveChanges=()=>{
     mode: "no-cors",
     body: JSON.stringify({
         "id": animal2.id,
-        "name": petName
+        "name": petName,
+        "health": petHealth,
+        "age": petAge,
+        "location": petLocation
     })}).then(res => {
         
         alert("Changes saved");
@@ -112,24 +119,24 @@ const saveChanges=()=>{
                         <div className="input-group-prepend">
                             <span className="input-group-text bg-dark text-light" id="basic-addon1">Health Status</span>
                         </div>
-                        <input type="text" className="form-control bg-dark text-light" placeholder={animal2.health} aria-label="name" aria-describedby="basic-addon1">
-                        </input>
+                        <input type="text" className="form-control bg-dark text-light" placeholder={animal2.health} aria-label="name" aria-describedby="basic-addon1" onChange={(e) => setPetHealth(e.target.value)} />
+                        
                     </div>
 
                     <div className="input-group mb-3 w-50 p-3 mx-auto">
                         <div className="input-group-prepend">
                             <span className="input-group-text bg-dark text-light" id="basic-addon1">Age</span>
                         </div>
-                        <input type="text" className="form-control bg-dark text-light" placeholder={animal2.age} aria-label="name" aria-describedby="basic-addon1">
-                        </input>
+                        <input type="text" className="form-control bg-dark text-light" placeholder={animal2.age} aria-label="name" aria-describedby="basic-addon1" onChange={(e) => setPetAge(e.target.value)} />
+                       
                     </div>
 
                     <div className="input-group mb-3 w-50 p-3 mx-auto">
                         <div className="input-group-prepend">
                             <span className="input-group-text bg-dark text-light" id="basic-addon1">Location</span>
                         </div>
-                        <input type="text" className="form-control bg-dark text-light" placeholder={animal2.location} aria-label="name" aria-describedby="basic-addon1">
-                        </input>
+                        <input type="text" className="form-control bg-dark text-light" placeholder={animal2.location} aria-label="name" aria-describedby="basic-addon1" onChange={(e) => setPetLocation(e.target.value)} />
+                       
                         </div> 
                         <div className="card bg-dark card-center my-2 p-2 mx-auto" style={{ width: '20rem', height: '20rem' }}>
                         <img src={Dog1} className="card-img-top" alt="dog1"  ></img>
