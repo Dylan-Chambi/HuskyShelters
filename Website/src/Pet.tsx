@@ -16,22 +16,23 @@ const Pet = () => {
     const [reload, setReload] = useState(false);
     const [animalCollection, setAnimalCollection] = React.useState<Array<any>>([]);
 
+    
     useEffect(() => {
         const pet: any = location.state;
         setAnimal(pet.petAnimal);
-        console.log(pet);
     }, [location]);
 
 
     useEffect(() => {
-        console.log("Calling API");
-        axios.get("https://ue1spf4hoa.execute-api.us-east-1.amazonaws.com/aws/get-images/" + animal.id).then(res => {
-            setAnimalCollection(res.data);
-            console.log(res.data);
-        }).catch(err => {
-            console.log(err);
-        });
-    }, [animal, reload]);
+        if (Object.keys(animal).includes("id")) {
+            axios.get("https://ue1spf4hoa.execute-api.us-east-1.amazonaws.com/aws/get-images/" + animal.id).then(res => {
+                setAnimalCollection(res.data);
+                console.log(res.data);
+            }).catch(err => {
+                console.log(err);
+            });
+        }
+    }, [animal]);
 
     const onClickUpload = async () => {
         await axios.get("https://ue1spf4hoa.execute-api.us-east-1.amazonaws.com/aws/upload-image/" + animal.id).then(res => {

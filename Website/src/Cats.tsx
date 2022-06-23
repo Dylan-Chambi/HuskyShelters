@@ -20,7 +20,6 @@ const Cats = () => {
             <h1 className="text-center"> OUR LOVELY CATS! </h1>
             <div className="row d-flex justify-content-around my-5 p-5">
                 {petAnimals.filter((cat: any) => {
-                    console.log(cat.type);
                     return cat.type === "Cat";
                 }).map((petAnimal: any) => {
 

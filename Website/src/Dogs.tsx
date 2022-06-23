@@ -1,17 +1,19 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Dog2 from "./dog2.png";
 import axios from "axios";
 const Dogs = () => {
-    const [petAnimals, setDogs] = React.useState<Array<any>>([]);
-    React.useEffect(() => {
+    const [petAnimals, setDogs] = useState<Array<any>>([]);
+
+    useEffect(() => {
         axios.get("https://ue1spf4hoa.execute-api.us-east-1.amazonaws.com/aws/get-table-items").then(res => {
             setDogs(res.data);
-
         }).catch(err => {
             console.log(err);
         });
     }, []);
+
     return (
         <main role="main" className="bg-warning">
             <div className=" my-3 p-3"></div>
@@ -19,7 +21,6 @@ const Dogs = () => {
             <h1 className="text-center"> OUR LOVELY DOGS! </h1>
             <div className="row d-flex justify-content-around my-5 p-5">
                 {petAnimals.filter((petAnimal: any) => {
-                    console.log(petAnimal.type);
                     return petAnimal.type === "Dog";
                 }).map((petAnimal: any, index: number) => {
 
