@@ -5,8 +5,11 @@
   "keywords": [],
   "main": "src/index.tsx",
   "dependencies": {
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
     "@fortawesome/fontawesome-free": "5.12.1",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
+    "@mui/material": "^5.8.5",
     "axios": "^0.27.2",
     "bootstrap": "4.4.1",
     "jquery": "^3.6.0",
@@ -21,7 +24,8 @@
   },
   "devDependencies": {
     "@types/react": "16.9.19",
-    "@types/react-dom": "16.9.5"
+    "@types/react-dom": "16.9.5",
+    "react-error-overlay": "^6.0.9"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -78,10 +78,10 @@ const Dogs = () => {
                 {petAnimals.filter((petAnimal: any) => {
                     console.log(petAnimal.type);
                     return petAnimal.type === "Dog";
-                }).map((petAnimal: any) => {
+                }).map((petAnimal: any, index: number) => {
 
                     return (
-                        <div className="card bg-dark " style={{ width: '12rem', height: '18rem' }}>
+                        <div className="card bg-dark " key={index} style={{ width: '12rem', height: '18rem' }}>
                         <img src={Dog2} className="card-img-top" alt="petAnimal2"  ></img>
 
                         <div className="card-body">
