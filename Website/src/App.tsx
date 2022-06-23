@@ -9,6 +9,7 @@ import FindAPet from "./FindAPet";
 import Dogs from "./Dogs";
 import Cats from "./Cats";
 import Pet from "./Pet";
+import EditInfo from "./EditInfo";
 export default function App() {
   return (
     <BrowserRouter>
@@ -21,6 +22,7 @@ export default function App() {
         <Route path="/dogs" element={<Dogs />} />
         <Route path="/cats" element={<Cats />} />
         <Route path="/pet" element={<Pet />} />
+        <Route path="/edit" element={<EditInfo />} />
       </Routes>
     </BrowserRouter>
   )

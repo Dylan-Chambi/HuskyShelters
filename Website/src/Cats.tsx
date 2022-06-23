@@ -8,7 +8,7 @@ import axios from "axios";
 const Cats = () => {
     const [petAnimals, setCats] = React.useState<Array<any>>([]);
     React.useEffect(() => {
-    axios.get("https://i42ngdowva.execute-api.us-east-1.amazonaws.com/aws/get-table-items").then(res => {
+    axios.get("https://ue1spf4hoa.execute-api.us-east-1.amazonaws.com/aws/get-table-items").then(res => {
         setCats(res.data);
        
     }).catch(err => {
@@ -74,8 +74,8 @@ const Cats = () => {
             <main role="main" className="bg-warning">
                 <div className=" my-3 p-3"></div>
                 <div className=" my-3 p-3"></div>
-                <h1 className="text-center"> OUR LOVELY DOGS! </h1>
-                <div className="row d-flex justify-content-around">
+                <h1 className="text-center"> OUR LOVELY CATS! </h1>
+                <div className="row d-flex justify-content-around my-5 p-5">
                 {petAnimals.filter((cat: any) => {
                     console.log(cat.type);
                     return cat.type === "Cat";

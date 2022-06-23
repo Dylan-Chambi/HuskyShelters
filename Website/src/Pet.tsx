@@ -17,8 +17,9 @@ const Pet = () => {
 
     const [animalCollection, setAnimalCollection] = React.useState<Array<any>>([]);
     React.useEffect(() => {
-        axios.get("https://i42ngdowva.execute-api.us-east-1.amazonaws.com/aws/get-images/" + animal.id).then(res => {
+        axios.get("https://ue1spf4hoa.execute-api.us-east-1.amazonaws.com/aws/get-images/" + animal.id).then(res => {
             setAnimalCollection(res.data);
+            console.log(res.data);
 
         }).catch(err => {
             console.log(err);
@@ -118,12 +119,15 @@ const Pet = () => {
 
                         )
                     })}
-
-
-
+                   
 
                 </div>
                 <div className="row d-flex justify-content-around my-3 p-3">
+                    <Link to="/edit" state={{animal: animal}}>
+                        <button type="button" className="btn btn-dark btn-lg">
+                            EDIT INFORMATION!
+                        </button>
+                    </Link>
                     <Link to="/">
                         <button type="button" className="btn btn-dark btn-lg">
                             CONTACT US!

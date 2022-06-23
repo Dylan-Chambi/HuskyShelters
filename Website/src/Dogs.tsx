@@ -7,7 +7,7 @@ import axios from "axios";
 const Dogs = () => {
     const [petAnimals, setDogs] = React.useState<Array<any>>([]);
     React.useEffect(() => {
-    axios.get("https://i42ngdowva.execute-api.us-east-1.amazonaws.com/aws/get-table-items").then(res => {
+    axios.get("https://ue1spf4hoa.execute-api.us-east-1.amazonaws.com/aws/get-table-items").then(res => {
         setDogs(res.data);
        
     }).catch(err => {
@@ -74,7 +74,7 @@ const Dogs = () => {
                 <div className=" my-3 p-3"></div>
                 <div className=" my-3 p-3"></div>
                 <h1 className="text-center"> OUR LOVELY DOGS! </h1>
-                <div className="row d-flex justify-content-around">
+                <div className="row d-flex justify-content-around my-5 p-5">
                 {petAnimals.filter((petAnimal: any) => {
                     console.log(petAnimal.type);
                     return petAnimal.type === "Dog";
