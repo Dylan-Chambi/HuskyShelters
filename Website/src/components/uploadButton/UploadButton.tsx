@@ -15,5 +15,4 @@ function UploadButton() {
     </div>
   );
 }
-
 export default UploadButton;

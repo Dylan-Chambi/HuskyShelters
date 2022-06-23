@@ -1,7 +1,7 @@
 {
   "include": [
     "./src/*"
-  ],
+, "src/components/uploadButton/UploadButton.tsx"  ],
   "compilerOptions": {
     "strict": true,
     "lib": [
