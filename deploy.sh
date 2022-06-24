@@ -48,12 +48,13 @@ if [[ $i -eq 1 ]]; then
 
   echo "Node JS dependencies installation"
   cd ../Website
-  npm i
-  cd ../CloudFormation
+  npm install  --legacy-peer-deps
+  cd ..
 fi
 
 if [[ $b -eq 1 ]]; then
   echo "Building template"
+  cd ./CloudFormation
   aws cloudformation package \
   --template-file template.yaml \
   --s3-bucket $DEPLOYMENTS_BUCKET \
@@ -62,18 +63,21 @@ if [[ $b -eq 1 ]]; then
   echo "Building website"
   cd ../Website
   npm run build
-  cd ../CloudFormation
+  cd ..
 fi
 
 if [[ $d -eq 1 ]]; then
+  cd ./CloudFormation
   aws cloudformation deploy \
   --no-fail-on-empty-changeset \
   --template-file $PACKAGED_TEMPLATE \
   --stack-name husky-shelter-stack \
   --capabilities CAPABILITY_NAMED_IAM
+  cd ..
 fi
 
 if [[ $u -eq 1 ]]; then
+  cd ./CloudFormation
   echo "Uploading database"
   aws s3 cp ./data/animalAdoptionData.csv s3://animaldatabucket346253/
 
@@ -95,6 +99,7 @@ if [[ $u -eq 1 ]]; then
     ((i = i + 1))
     cd ..
   done
+  cd ..
 
   echo "Uploading website"
   cd ../Website
