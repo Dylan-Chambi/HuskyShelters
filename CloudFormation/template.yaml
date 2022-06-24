@@ -12,7 +12,8 @@ Resources:
           Name: 'AWS::Include'
           Parameters:
             Location: swaggerFile.yaml
-      
+
+
   UpdateItem:
     Type: AWS::Serverless::Function
     Properties:
@@ -224,6 +225,23 @@ Resources:
           ViewerProtocolPolicy: 'redirect-to-https'
         ViewerCertificate:
           CloudFrontDefaultCertificate: true      
+        CustomErrorResponses:
+          - ErrorCode: 403
+            ResponseCode: 200
+            ResponsePagePath: /index.html
+            ErrorCachingMinTTL: 300
+          - ErrorCode: 404
+            ResponseCode: 200
+            ResponsePagePath: /index.html
+            ErrorCachingMinTTL: 300
+
+
+        
+
+
+
+
+
           
 Outputs:
   S3ImagesBucketName:

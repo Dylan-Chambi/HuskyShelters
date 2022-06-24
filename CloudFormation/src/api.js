@@ -30,6 +30,7 @@ const getUploadURL = async function(event) {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers": "*",
         "Access-Control-Allow-Methods": "*"
+
       },
       "body": JSON.stringify({
           "uploadURL": uploadURL,
