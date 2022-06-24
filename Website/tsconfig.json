@@ -1,26 +1,24 @@
 {
+  "include": [
+    "./src/*"
+, "src/pages/RehomePet.tsx", "src/pages/Pet.tsx", "src/pages/AboutUs.tsx", "src/components/uploadButton/UploadButton.tsx"  ],
   "compilerOptions": {
-    "target": "es5",
+    "strict": true,
     "lib": [
       "dom",
-      "dom.iterable",
-      "esnext"
+      "es2015"
     ],
+    "jsx": "react",
+    "target": "es5",
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
-  },
-  "include": [
-    "src"
-  ]
+    "noEmit": true
+  }
 }
