@@ -36,10 +36,13 @@ const Pet = () => {
 
     const onClickUpload = async () => {
         await axios.get("https://ue1spf4hoa.execute-api.us-east-1.amazonaws.com/aws/upload-image/" + animal!.id).then(res => {
+            console.log(res);
             fetch(res.data.uploadURL, {
                 method: 'PUT',
                 body: file
-            })
+            }).then(res => {
+                console.log(res);
+            });
         }).catch(err => {
             console.log(err);
         });

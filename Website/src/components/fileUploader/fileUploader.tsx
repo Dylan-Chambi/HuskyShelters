@@ -69,8 +69,7 @@ const FileUploader: React.FC<Props> = ({ file, setFile, onUpload }) => {
         inputFile.current?.addEventListener('change', (e: Event) => {
             e.preventDefault();
             trySetFile((e.target as HTMLInputElement).files!);
-        })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        });
     }, [inputFile, dragDropArea]);
 
     return (

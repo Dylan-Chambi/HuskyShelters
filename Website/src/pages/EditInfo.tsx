@@ -1,8 +1,8 @@
 import { TextField, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Box } from "@mui/material";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hooks-useform";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Dog1 from "../images/dog1.jpg";
 import { PetType } from "../schemas/animalDynamoDB";
@@ -17,19 +17,9 @@ const EditInfo = () => {
         setPetInfo(state.animal as PetType);
     }, [location]);
 
-    const [fields] = useForm({
-        fields: [
-            { name: "name", value: petInfo?.name || "" },
-            { name: "age", value: petInfo?.age || "" },
-            { name: "type", value: petInfo?.type || "" },
-            { name: "location", value: petInfo?.location || "" },
-            { name: "status", value: petInfo?.status || "" },
-            { name: "health", value: petInfo?.health || "" },
-        ],
-        submit: (data) => new Promise(() => { }),
-    });
+    const { register, setValue, handleSubmit, formState: { errors } } = useForm<PetType>();
 
-    const saveChanges = () => {
+    const saveChanges: SubmitHandler<PetType> = (petData) => {
         fetch("https://ue1spf4hoa.execute-api.us-east-1.amazonaws.com/aws/update-item", {
             headers: {
                 "Content-Type": "application/json",
@@ -37,25 +27,11 @@ const EditInfo = () => {
             },
             method: "POST",
             mode: "no-cors",
-            body: JSON.stringify({
-                "id": petInfo!.id,
-                "name": fields.name.value === "" ? petInfo!.name : fields.name.value,
-                "health": fields.health.value === "" ? petInfo!.health : fields.health.value,
-                "age": fields.age.value === "" ? petInfo!.age : fields.age.value,
-                "location": fields.location.value === "" ? petInfo!.location : fields.location.value
-            })
+            body: JSON.stringify({ ...petData, id: petInfo!.id })
         }).then(res => {
             navigate("/pet", {
                 state: {
-                    animal: {
-                        id: petInfo!.id,
-                        name: fields.name.value === "" ? petInfo!.name : fields.name.value,
-                        health: fields.health.value === "" ? petInfo!.health : fields.health.value,
-                        age: fields.age.value === "" ? petInfo!.age : fields.age.value,
-                        location: fields.location.value === "" ? petInfo!.location : fields.location.value,
-                        type: petInfo!.type,
-                        status: petInfo!.status
-                    }
+                    animal: { ...petData, id: petInfo!.id, type: petInfo!.type, status: petInfo!.status }
                 }
             });
         }).catch(err => {
@@ -79,35 +55,35 @@ const EditInfo = () => {
                                     <Box className="input-group-prepend">
                                         <Typography className="input-group-text bg-dark text-light border-0" >Name</Typography>
                                     </Box>
-                                    <TextField type="text" className="form-control bg-dark text-light" size="small" {...fields.name} placeholder={petInfo.name} sx={{ input: { color: "white", width: "400px" } }} />
+                                    <TextField type="text" className="form-control bg-dark text-light" size="small" {...register("name")} placeholder={petInfo.name} sx={{ input: { color: "white", width: "400px" } }} />
                                 </div>
 
                                 <div className="input-group p-3 mx-auto">
                                     <Box className="input-group-prepend">
                                         <Typography className="input-group-text bg-dark text-light border-0" >Health Status</Typography>
                                     </Box>
-                                    <TextField type="text" className="form-control bg-dark text-light" size="small" {...fields.health} placeholder={petInfo.health} sx={{ input: { color: "white" } }} />
+                                    <TextField type="text" className="form-control bg-dark text-light" size="small" {...register("health")} placeholder={petInfo.health} sx={{ input: { color: "white" } }} />
                                 </div>
 
                                 <div className="input-group mb-3 p-3 mx-auto">
                                     <Box className="input-group-prepend">
                                         <Typography className="input-group-text bg-dark text-light border-0" >Age</Typography>
                                     </Box>
-                                    <TextField type="text" className="form-control bg-dark text-light" size="small" {...fields.age} placeholder={petInfo.age} sx={{ input: { color: "white" } }} />
+                                    <TextField type="text" className="form-control bg-dark text-light" size="small" {...register("age")} placeholder={petInfo.age} sx={{ input: { color: "white" } }} />
                                 </div>
 
                                 <div className="input-group mb-3 p-3 mx-auto">
                                     <Box className="input-group-prepend">
                                         <Typography className="input-group-text bg-dark text-light border-0" >Location</Typography>
                                     </Box>
-                                    <TextField type="text" className="form-control bg-dark text-light" size="small" {...fields.location} placeholder={petInfo.location} sx={{ input: { color: "white" } }} />
+                                    <TextField type="text" className="form-control bg-dark text-light" size="small" {...register("location")} placeholder={petInfo.location} sx={{ input: { color: "white" } }} />
                                 </div>
                             </div>
                         </Box>
 
                     </div>
                     <div className="row d-flex justify-content-around my-1 p-4">
-                        <button type="submit" className="btn btn-dark btn-lg" onClick={saveChanges}>
+                        <button type="submit" className="btn btn-dark btn-lg" onClick={handleSubmit(saveChanges)}>
                             Save
                         </button>
                         <Link to="/pet" state={{ animal: petInfo }}>
