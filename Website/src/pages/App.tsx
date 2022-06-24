@@ -6,9 +6,10 @@ import ContactUs from "./ContactUs";
 import AboutUs from "./AboutUs";
 import RehomePet from "./RehomePet";
 import FindAPet from "./FindAPet";
+import Pet from "./Pet";
 import Dogs from "./Dogs";
 import Cats from "./Cats";
-import Pet from "./Pet";
+
 import EditInfo from "./EditInfo";
 import Logo from "../images/logo.png";
 import Logo2 from "../images/logo2.png";
@@ -20,8 +21,8 @@ import "@fortawesome/fontawesome-free/css/all.css";
 
 export default function App() {
   return (
-    <div className="bg-warning ">
-      <nav className="navbar bg-warning fixed-top">
+    <div className="bg-warning " style = {{ position: "absolute", height: "fit-content", width: "100%", minHeight: "100vh", top: "0", left: "0" }}>
+      <nav className="navbar bg-warning ixed-top">
         <div className="navbard-flex justify-content-between ">
           <h3>
             <img
@@ -73,6 +74,7 @@ export default function App() {
           </nav>
         </div>
       </nav>
+      <main className="container">
         <Routes>
           <Route path="/" element={<Layout />} />
           <Route path="/contact" element={<ContactUs />} />
@@ -84,6 +86,7 @@ export default function App() {
           <Route path="/pet" element={<Pet />} />
           <Route path="/edit" element={<EditInfo />} />
         </Routes>
+      </main>
     </div>
   )
 }

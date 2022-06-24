@@ -1,105 +1,123 @@
+import { TextField, Typography } from "@mui/material";
+import { Box } from "@mui/system";
 import * as React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hooks-useform";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Dog1 from "../images/dog1.jpg";
+import { PetType } from "../schemas/animalDynamoDB";
 
 const EditInfo = () => {
+    const navigate = useNavigate();
     const location = useLocation();
 
-    const [animal2, setAnimal2] = React.useState<any>({});
-    React.useEffect(() => {
-        const pet: any = location.state;
-        setAnimal2(pet.animal);
-        console.log(pet);
+    const [petInfo, setPetInfo] = useState<PetType | null>(null);
+    useEffect(() => {
+        const state: any = location.state;
+        setPetInfo(state.animal as PetType);
     }, [location]);
 
-    const [petAge, setPetAge] = React.useState("");
-    const [petHealth, setPetHealth] = React.useState("");
-    const [petLocation, setPetLocation] = React.useState("");
-    const [petName, setPetName] = React.useState("");
+    const [fields] = useForm({
+        fields: [
+            { name: "name", value: petInfo?.name || "" },
+            { name: "age", value: petInfo?.age || "" },
+            { name: "type", value: petInfo?.type || "" },
+            { name: "location", value: petInfo?.location || "" },
+            { name: "status", value: petInfo?.status || "" },
+            { name: "health", value: petInfo?.health || "" },
+        ],
+        submit: (data) => new Promise(() => { }),
+    });
 
     const saveChanges = () => {
-        console.log(petName);
-        console.log(animal2.id);
         fetch("https://ue1spf4hoa.execute-api.us-east-1.amazonaws.com/aws/update-item", {
             headers: {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*"
-
             },
             method: "POST",
             mode: "no-cors",
             body: JSON.stringify({
-                "id": animal2.id,
-                "name": petName,
-                "health": petHealth,
-                "age": petAge,
-                "location": petLocation
+                "id": petInfo!.id,
+                "name": fields.name.value === "" ? petInfo!.name : fields.name.value,
+                "health": fields.health.value === "" ? petInfo!.health : fields.health.value,
+                "age": fields.age.value === "" ? petInfo!.age : fields.age.value,
+                "location": fields.location.value === "" ? petInfo!.location : fields.location.value
             })
         }).then(res => {
-
-            alert("Changes saved");
-
+            navigate("/pet", {
+                state: {
+                    animal: {
+                        id: petInfo!.id,
+                        name: fields.name.value === "" ? petInfo!.name : fields.name.value,
+                        health: fields.health.value === "" ? petInfo!.health : fields.health.value,
+                        age: fields.age.value === "" ? petInfo!.age : fields.age.value,
+                        location: fields.location.value === "" ? petInfo!.location : fields.location.value,
+                        type: petInfo!.type,
+                        status: petInfo!.status
+                    }
+                }
+            });
         }).catch(err => {
             console.log(err);
-            alert("Error");
         });
     }
 
 
     return (
-        <main role="main" className="bg-warning">
-            <div className=" my-4 p-3 mx-auto">
+        <>
+            {petInfo ?
+                <div>
+                    <div className=" my-4 p-3 mx-auto">
+                        <h1 className="text-center">EDIT YOUR PET INFORMATION!</h1>
+                        <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-around", alignItems: "center" }}>
+                            <div className="card bg-dark card-center my-2 p-2 " style={{ width: '20rem', height: '20rem' }}>
+                                <img src={Dog1} className="card-img-top" alt="dog1"  ></img>
+                            </div>
+                            <div>
+                                <div className="input-group p-3 mx-auto w-500">
+                                    <Box className="input-group-prepend">
+                                        <Typography className="input-group-text bg-dark text-light border-0" >Name</Typography>
+                                    </Box>
+                                    <TextField type="text" className="form-control bg-dark text-light" size="small" {...fields.name} placeholder={petInfo.name} sx={{ input: { color: "white", width: "400px" } }} />
+                                </div>
 
-                <h1 className="text-center">EDIT YOUR PET INFORMATION!</h1>
+                                <div className="input-group p-3 mx-auto">
+                                    <Box className="input-group-prepend">
+                                        <Typography className="input-group-text bg-dark text-light border-0" >Health Status</Typography>
+                                    </Box>
+                                    <TextField type="text" className="form-control bg-dark text-light" size="small" {...fields.health} placeholder={petInfo.health} sx={{ input: { color: "white" } }} />
+                                </div>
 
-                <div className="input-group mb-3 w-50 mt-5 p-3 mx-auto">
-                    <div className="input-group-prepend">
-                        <span className="input-group-text bg-dark text-light" id="basic-addon1">Name</span>
+                                <div className="input-group mb-3 p-3 mx-auto">
+                                    <Box className="input-group-prepend">
+                                        <Typography className="input-group-text bg-dark text-light border-0" >Age</Typography>
+                                    </Box>
+                                    <TextField type="text" className="form-control bg-dark text-light" size="small" {...fields.age} placeholder={petInfo.age} sx={{ input: { color: "white" } }} />
+                                </div>
+
+                                <div className="input-group mb-3 p-3 mx-auto">
+                                    <Box className="input-group-prepend">
+                                        <Typography className="input-group-text bg-dark text-light border-0" >Location</Typography>
+                                    </Box>
+                                    <TextField type="text" className="form-control bg-dark text-light" size="small" {...fields.location} placeholder={petInfo.location} sx={{ input: { color: "white" } }} />
+                                </div>
+                            </div>
+                        </Box>
+
                     </div>
-                    <input type="text" className="form-control bg-dark text-light" placeholder={animal2.name} aria-label="name" aria-describedby="basic-addon1" onChange={(e) => setPetName(e.target.value)} />
-
-                </div>
-
-                <div className="input-group mb-3 w-50 p-3 mx-auto">
-                    <div className="input-group-prepend">
-                        <span className="input-group-text bg-dark text-light" id="basic-addon1">Health Status</span>
+                    <div className="row d-flex justify-content-around my-1 p-4">
+                        <button type="submit" className="btn btn-dark btn-lg" onClick={saveChanges}>
+                            Save
+                        </button>
+                        <Link to="/pet" state={{ animal: petInfo }}>
+                            <button type="button" className="btn btn-dark btn-lg">
+                                Cancel
+                            </button>
+                        </Link>
                     </div>
-                    <input type="text" className="form-control bg-dark text-light" placeholder={animal2.health} aria-label="name" aria-describedby="basic-addon1" onChange={(e) => setPetHealth(e.target.value)} />
-
-                </div>
-
-                <div className="input-group mb-3 w-50 p-3 mx-auto">
-                    <div className="input-group-prepend">
-                        <span className="input-group-text bg-dark text-light" id="basic-addon1">Age</span>
-                    </div>
-                    <input type="text" className="form-control bg-dark text-light" placeholder={animal2.age} aria-label="name" aria-describedby="basic-addon1" onChange={(e) => setPetAge(e.target.value)} />
-
-                </div>
-
-                <div className="input-group mb-3 w-50 p-3 mx-auto">
-                    <div className="input-group-prepend">
-                        <span className="input-group-text bg-dark text-light" id="basic-addon1">Location</span>
-                    </div>
-                    <input type="text" className="form-control bg-dark text-light" placeholder={animal2.location} aria-label="name" aria-describedby="basic-addon1" onChange={(e) => setPetLocation(e.target.value)} />
-
-                </div>
-                <div className="card bg-dark card-center my-2 p-2 mx-auto" style={{ width: '20rem', height: '20rem' }}>
-                    <img src={Dog1} className="card-img-top" alt="dog1"  ></img>
-                </div>
-            </div>
-            <div className="row d-flex justify-content-around my-1 p-4">
-                <Link to="/">
-                    <button type="button" className="btn btn-dark btn-lg" onClick={saveChanges}>
-                        SAVE
-                    </button>
-                </Link>
-                <Link to="/">
-                    <button type="button" className="btn btn-dark btn-lg">
-                        CANCEL
-                    </button>
-                </Link>
-            </div>
-        </main>
+                </div> : <div>Error: Missing pet info</div>}
+        </>
     );
 
 }

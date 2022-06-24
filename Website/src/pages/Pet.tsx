@@ -4,13 +4,14 @@ import { Link, useLocation } from "react-router-dom";
 import Dog1 from "../images/dog1.jpg";
 import axios from "axios";
 import FileUploader from "../components/fileUploader/fileUploader";
+import { PetType } from "../schemas/animalDynamoDB";
 import { Button } from "@mui/material";
 
 const delay = (ms?: number | undefined) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const Pet = () => {
     const location = useLocation();
-    const [animal, setAnimal] = useState<any>({});
+    const [animal, setAnimal] = useState<PetType | null>(null);
     const [file, setFile] = useState<Blob | null>(null);
     const [isFile, setIsFile] = useState(false);
     const [reload, setReload] = useState(false);
@@ -19,12 +20,12 @@ const Pet = () => {
     
     useEffect(() => {
         const pet: any = location.state;
-        setAnimal(pet.petAnimal);
+        setAnimal(pet.animal as PetType);
     }, [location]);
 
 
     useEffect(() => {
-        if (Object.keys(animal).includes("id")) {
+        if (animal) {
             axios.get("https://ue1spf4hoa.execute-api.us-east-1.amazonaws.com/aws/get-images/" + animal.id).then(res => {
                 setAnimalCollection(res.data);
             }).catch(err => {
@@ -34,7 +35,7 @@ const Pet = () => {
     }, [animal, reload]);
 
     const onClickUpload = async () => {
-        await axios.get("https://ue1spf4hoa.execute-api.us-east-1.amazonaws.com/aws/upload-image/" + animal.id).then(res => {
+        await axios.get("https://ue1spf4hoa.execute-api.us-east-1.amazonaws.com/aws/upload-image/" + animal!.id).then(res => {
             fetch(res.data.uploadURL, {
                 method: 'PUT',
                 body: file
@@ -55,6 +56,8 @@ const Pet = () => {
 
 
     return (
+        <>
+        {animal ?
         <main role="main" className="bg-warning">
             <div className=" my-3 p-3"></div>
             <div className=" my-3 p-3"></div>
@@ -127,7 +130,8 @@ const Pet = () => {
             <div className=" my-3 p-3"></div>
             <div className=" my-3 p-3"></div>
             <div className=" my-1 p-1"></div>
-        </main>
+        </main> : <div>Error: Animal not found</div>}
+        </>
     );
 
 }

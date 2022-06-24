@@ -30,7 +30,7 @@ const Dogs = () => {
 
                             <div className="card-body">
                                 <h5 className="card-title text-center text-light">{petAnimal.name}</h5>
-                                <Link to="/pet" state={{ petAnimal: petAnimal }}>
+                                <Link to="/pet" state={{ animal: petAnimal }}>
                                     <p className="btn btn-warning text-dark">ADOPT NOW!</p>
                                 </Link>
                             </div>
