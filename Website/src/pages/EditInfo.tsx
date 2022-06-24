@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link, useLocation } from "react-router-dom";
-import Dog1 from "./dog1.jpg";
+import Dog1 from "../images/dog1.jpg";
 
 const EditInfo = () => {
     const location = useLocation();

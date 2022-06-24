@@ -10,8 +10,8 @@ import Dogs from "./Dogs";
 import Cats from "./Cats";
 import Pet from "./Pet";
 import EditInfo from "./EditInfo";
-import Logo from "./logo.png";
-import Logo2 from "./logo2.png";
+import Logo from "../images/logo.png";
+import Logo2 from "../images/logo2.png";
 
 // Import precompiled Bootstrap css
 import "bootstrap";

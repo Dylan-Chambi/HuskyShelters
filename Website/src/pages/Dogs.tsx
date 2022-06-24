@@ -1,30 +1,31 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Dog2 from "./dog2.png";
+import Dog2 from "../images/dog2.png";
 import axios from "axios";
+const Dogs = () => {
+    const [petAnimals, setDogs] = useState<Array<any>>([]);
 
-const Cats = () => {
-    const [petAnimals, setCats] = React.useState<Array<any>>([]);
-    React.useEffect(() => {
+    useEffect(() => {
         axios.get("https://ue1spf4hoa.execute-api.us-east-1.amazonaws.com/aws/get-table-items").then(res => {
-            setCats(res.data);
-
+            setDogs(res.data);
         }).catch(err => {
             console.log(err);
         });
     }, []);
+
     return (
         <main role="main" className="bg-warning">
             <div className=" my-3 p-3"></div>
             <div className=" my-3 p-3"></div>
-            <h1 className="text-center"> OUR LOVELY CATS! </h1>
+            <h1 className="text-center"> OUR LOVELY DOGS! </h1>
             <div className="row d-flex justify-content-around my-5 p-5">
-                {petAnimals.filter((cat: any) => {
-                    return cat.type === "Cat";
-                }).map((petAnimal: any) => {
+                {petAnimals.filter((petAnimal: any) => {
+                    return petAnimal.type === "Dog";
+                }).map((petAnimal: any, index: number) => {
 
                     return (
-                        <div className="card bg-dark " style={{ width: '12rem', height: '18rem' }}>
+                        <div className="card bg-dark " key={index} style={{ width: '12rem', height: '18rem' }}>
                             <img src={Dog2} className="card-img-top" alt="petAnimal2"  ></img>
 
                             <div className="card-body">
@@ -34,6 +35,8 @@ const Cats = () => {
                                 </Link>
                             </div>
                         </div>
+
+
                     )
                 })}
             </div>
@@ -47,4 +50,4 @@ const Cats = () => {
     );
 
 }
-export default Cats;
+export default Dogs;

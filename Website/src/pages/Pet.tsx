@@ -1,9 +1,9 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import Dog1 from "./dog1.jpg";
+import Dog1 from "../images/dog1.jpg";
 import axios from "axios";
-import FileUploader from "./components/fileUploader/fileUploader";
+import FileUploader from "../components/fileUploader/fileUploader";
 import { Button } from "@mui/material";
 
 const delay = (ms?: number | undefined) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -27,21 +27,17 @@ const Pet = () => {
         if (Object.keys(animal).includes("id")) {
             axios.get("https://ue1spf4hoa.execute-api.us-east-1.amazonaws.com/aws/get-images/" + animal.id).then(res => {
                 setAnimalCollection(res.data);
-                console.log(res.data);
             }).catch(err => {
                 console.log(err);
             });
         }
-    }, [animal]);
+    }, [animal, reload]);
 
     const onClickUpload = async () => {
         await axios.get("https://ue1spf4hoa.execute-api.us-east-1.amazonaws.com/aws/upload-image/" + animal.id).then(res => {
-            console.log(res);
             fetch(res.data.uploadURL, {
                 method: 'PUT',
                 body: file
-            }).then(res => {
-                console.log(res);
             })
         }).catch(err => {
             console.log(err);
@@ -85,7 +81,7 @@ const Pet = () => {
 
                     return (
                         <div className="card bg-dark card-center my-3 p-3" key={index} style={{ width: '20rem', height: '20rem' }}>
-                            <img src={photo} className="card-img-top" alt="dog2"></img>
+                            <img src={photo} className="card-img-top" alt="dog2" style={{ height: "100%", width: "100%" }}></img>
                         </div>
                     )
                 })}

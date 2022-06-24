@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import UploadButton from "./components/uploadButton/UploadButton";
+import UploadButton from "../components/uploadButton/UploadButton";
 import "./styles.css";
 const RehomePet: React.FC = () => {
   return (

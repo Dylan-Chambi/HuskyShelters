@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import Dogs from "./dogs.png";
-import Cats from "./cats.png";
+import Dogs from "../images/dogs.png";
+import Cats from "../images/cats.png";
 const FindAPet = () => {
     return (
         <main role="main" className="bg-warning">

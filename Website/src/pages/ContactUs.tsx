@@ -1,5 +1,5 @@
 import * as React from "react";
-import Gato from "./gato.jpg";
+import Gato from "../images/gato.jpg";
 
 const ContactUs = () => {
     return (
