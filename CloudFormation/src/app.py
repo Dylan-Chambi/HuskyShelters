@@ -85,6 +85,16 @@ def update_item(event, context):
 
 def get_table_items(event, context):
     response = table.scan()
+    response_body = json.dumps(response['Items'])
+    for item in response['Items']:
+        url = s3.generate_presigned_url(
+            ClientMethod='get_object',
+            Params={
+                'Bucket': 'animalimagesbucket',
+                'Key': 'thumbnails/' + item['id']['S'] + '.jpg'
+            }
+        )
+        item['thumbnail'] = url
     return {
         'statusCode': 200,
         'headers': {
@@ -92,7 +102,7 @@ def get_table_items(event, context):
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
         },
-        'body': json.dumps(response['Items'])
+        'body': response_body
     }
 
 

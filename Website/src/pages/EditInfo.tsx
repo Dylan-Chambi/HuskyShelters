@@ -22,6 +22,7 @@ const EditInfo = () => {
     const saveChanges: SubmitHandler<PetType> = (petData) => {
         console.log(petData);
         const newPetData = JSON.stringify({
+            id: petInfo!.id,
             age: petData.age === "" ? petInfo!.age : petData.age,
             health: petData.health === "" ? petInfo!.health : petData.health,
             location: petData.location === "" ? petInfo!.location : petData.location,

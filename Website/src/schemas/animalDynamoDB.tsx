@@ -5,7 +5,8 @@ export type PetType = {
     location: string,
     name: string,
     status: string,
-    type: string
+    type: string,
+    thumbnail: string
 }
 
 export const locationOptions = [

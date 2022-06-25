@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Dog2 from "../images/dog2.png";
 import axios from "axios";
+import { PetType } from "../schemas/animalDynamoDB";
 
 const Dogs = () => {
-    const [petAnimals, setDogs] = useState<Array<any>>([]);
+    const [petAnimals, setDogs] = useState<Array<PetType>>([]);
 
     useEffect(() => {
         axios.get(process.env.REACT_APP_GET_TABLE_ITEMS!).then(res => {
@@ -23,12 +24,11 @@ const Dogs = () => {
             <div className="row d-flex justify-content-around my-5 p-5">
                 {petAnimals.filter((petAnimal: any) => {
                     return petAnimal.type === "Dog";
-                }).map((petAnimal: any, index: number) => {
+                }).map((petAnimal: PetType, index: number) => {
 
                     return (
                         <div className="card bg-dark " key={index} style={{ width: '12rem', height: '18rem' }}>
-                            <img src={Dog2} className="card-img-top" alt="petAnimal2"  ></img>
-
+                            <img src={petAnimal.thumbnail} className="card-img-top" alt={petAnimal.name}></img>
                             <div className="card-body">
                                 <h5 className="card-title text-center text-light">{petAnimal.name}</h5>
                                 <Link to="/pet" state={{ animal: petAnimal }}>
