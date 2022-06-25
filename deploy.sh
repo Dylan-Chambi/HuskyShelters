@@ -1,11 +1,11 @@
 #!/bin/bash
 
-OPTIONS=ibdu
-LONGOPTS=install,build,deploy,upload
+OPTIONS=ibdwu
+LONGOPTS=install,build,deploy,website,upload
 
 ! PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "$0" -- "$@")
 
-i=0 p=0 b=0 d=0 u=0
+i=0 p=0 b=0 d=0 w=0 u=0
 
 # CF_FILE="/tmp/cf_file.txt"
 DEPLOYMENTS_BUCKET="camibucketdeloyment" #CHANGE TO YOUR OWN BUCKET
@@ -28,10 +28,18 @@ case "$1" in
   d=1
   shift
   ;;
+
+
 -u | --upload)
   u=1
   shift
   ;;
+
+-w | --website)
+  w=1
+  shift
+  ;;
+
 --)
   shift
   break
@@ -61,12 +69,8 @@ if [[ $b -eq 1 ]]; then
   --template-file template.yaml \
   --s3-bucket $DEPLOYMENTS_BUCKET \
   --output-template-file $PACKAGED_TEMPLATE
-  
-  echo "Building website"
-  cd ../Website
-  rm -r buiild
-  npm run build
   cd ..
+
 fi
 
 if [[ $d -eq 1 ]]; then
@@ -78,6 +82,37 @@ if [[ $d -eq 1 ]]; then
   --capabilities CAPABILITY_NAMED_IAM
   cd ..
 fi
+
+if [[ $w -eq 1 ]]; then
+  echo "Creating .env file"
+  id=$(aws apigateway get-rest-apis --query 'items[?name==`"husky-shelters-api"`].[id]' --output text)
+  region=$(aws configure get region --output text)
+  url="https://$id.execute-api.$region.amazonaws.com/aws/"
+  getImages="${url}get-images/"
+  getTableItems="${url}get-table-items"
+  updateItem="${url}update-item"
+  uploadImage="${url}upload-image/"
+  cd ./Website
+  touch .env
+  echo REACT_APP_GET_TABLE_ITEMS = $getTableItems >> .env
+  echo REACT_APP_GET_IMAGES_BY_ID = $getImages >> .env
+  echo REACT_APP_POST_UPDATE_ITEM = $updateItem >> .env
+  echo REACT_APP_GET_UPLOAD_IMAGE_BY_ID = $uploadImage >> .env
+
+  cd ..
+
+  
+
+  echo "Building website"
+  cd ./Website
+  rm -r buiild
+  npm run build
+  cd ..
+  
+
+  
+fi
+
 
 if [[ $u -eq 1 ]]; then
   cd ./CloudFormation
