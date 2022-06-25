@@ -102,7 +102,7 @@ def get_table_items(event, context):
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': '*'
         },
-        'body': response['Items']
+        'body': json.dumps(response['Items'])
     }
 
 
