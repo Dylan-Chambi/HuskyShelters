@@ -26,7 +26,7 @@ const Pet = () => {
 
     useEffect(() => {
         if (animal) {
-            axios.get("https://ue1spf4hoa.execute-api.us-east-1.amazonaws.com/aws/get-images/" + animal.id).then(res => {
+            axios.get(process.env.REACT_APP_GET_IMAGES_BY_ID! + animal.id).then(res => {
                 setAnimalCollection(res.data);
             }).catch(err => {
                 console.log(err);
@@ -35,7 +35,7 @@ const Pet = () => {
     }, [animal, reload]);
 
     const onClickUpload = async () => {
-        await axios.get("https://ue1spf4hoa.execute-api.us-east-1.amazonaws.com/aws/upload-image/" + animal!.id).then(res => {
+        await axios.get(process.env.REACT_APP_GET_UPLOAD_IMAGE_BY_ID! + animal!.id).then(res => {
             console.log(res);
             fetch(res.data.uploadURL, {
                 method: 'PUT',

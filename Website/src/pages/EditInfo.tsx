@@ -20,7 +20,7 @@ const EditInfo = () => {
     const { register, setValue, handleSubmit, formState: { errors } } = useForm<PetType>();
 
     const saveChanges: SubmitHandler<PetType> = (petData) => {
-        fetch("https://ue1spf4hoa.execute-api.us-east-1.amazonaws.com/aws/update-item", {
+        fetch(process.env.REACT_APP_POST_UPDATE_ITEM!, {
             headers: {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*"

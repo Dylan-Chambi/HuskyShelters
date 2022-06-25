@@ -3,11 +3,12 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Dog2 from "../images/dog2.png";
 import axios from "axios";
+
 const Dogs = () => {
     const [petAnimals, setDogs] = useState<Array<any>>([]);
 
     useEffect(() => {
-        axios.get("https://ue1spf4hoa.execute-api.us-east-1.amazonaws.com/aws/get-table-items").then(res => {
+        axios.get(process.env.REACT_APP_GET_TABLE_ITEMS!).then(res => {
             setDogs(res.data);
         }).catch(err => {
             console.log(err);
