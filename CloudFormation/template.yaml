@@ -48,6 +48,8 @@ Resources:
       Policies:
         - DynamoDBReadPolicy:
             TableName: !Ref Table
+        - S3ReadPolicy:
+            BucketName: !Ref AnimalImagesBucket
   GetImagesByID:
     Type: AWS::Serverless::Function
     Properties:
@@ -265,6 +267,3 @@ Outputs:
   S3WebsiteAdoptionBucketURL:
     Description: BucketURL
     Value: !GetAtt WebsiteAdoptionBucket.WebsiteURL  
-
-
-

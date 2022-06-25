@@ -7,7 +7,7 @@ import { PetType } from "../schemas/animalDynamoDB";
 const Cats = () => {
     const [petAnimals, setCats] = React.useState<Array<PetType>>([]);
     React.useEffect(() => {
-        axios.get("https://ue1spf4hoa.execute-api.us-east-1.amazonaws.com/aws/get-table-items").then(res => {
+        axios.get(process.env.REACT_APP_GET_TABLE_ITEMS!).then(res => {
             setCats(res.data);
 
         }).catch(err => {
