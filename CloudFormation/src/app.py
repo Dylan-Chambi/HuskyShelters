@@ -4,6 +4,7 @@ from PIL import Image
 import PIL.Image
 import csv
 import json
+import os
 
 table = boto3.resource('dynamodb').Table('husky_shelter')
 s3 = boto3.client('s3')
@@ -85,13 +86,12 @@ def update_item(event, context):
 
 def get_table_items(event, context):
     response = table.scan()
-    response_body = json.dumps(response['Items'])
     for item in response['Items']:
         url = s3.generate_presigned_url(
             ClientMethod='get_object',
             Params={
                 'Bucket': 'animalimagesbucket',
-                'Key': 'thumbnails/' + item['id']['S'] + '.jpg'
+                'Key': 'thumbnails/' + item['id'] + '_500.jpg'
             }
         )
         item['thumbnail'] = url
@@ -102,7 +102,7 @@ def get_table_items(event, context):
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
         },
-        'body': response_body
+        'body': response['Items']
     }
 
 
@@ -204,10 +204,19 @@ def s3_images_handler(event, context):
             s3.download_file(bucket, key, download_path)
             resize_image(download_path, upload_path_500, 500, 500)
             resize_image(download_path, upload_path_50, 50, 50)
+
             s3.upload_file(upload_path_500, bucket,
                            f'folder_{metadata["id"]}/{name}')
+
+            s3.upload_file(upload_path_500, bucket,
+                           f'thumbnails/{metadata["id"]}_500.jpg')
+
             s3.upload_file(upload_path_50, bucket,
-                           f'thumbnails/{metadata["id"]}.jpeg')
+                           f'thumbnails/{metadata["id"]}_50.jpg')
+
+            os.remove(download_path)
+            os.remove(upload_path_500)
+            os.remove(upload_path_50)
             print('Image resized and uploaded to S3')
         else:
             print('Image not resized')
