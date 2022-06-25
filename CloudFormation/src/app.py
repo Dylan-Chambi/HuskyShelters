@@ -4,25 +4,24 @@ from PIL import Image
 import PIL.Image
 import csv
 import json
-     
+
 table = boto3.resource('dynamodb').Table('husky_shelter')
 s3 = boto3.client('s3')
-dynamodb = boto3.client('dynamodb', region_name = 'us-east-1')
+dynamodb = boto3.client('dynamodb', region_name='us-east-1')
+
 
 def update_item(event, context):
-    
+
     body = json.loads(event["body"])
     print(body)
     if 'id' not in body:
         return {
             "statusCode": 400,
             'headers': {
-            'Access-Control-Allow-Headers': '*',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': '*',
-            "Access-Control-Allow-Credentials" : True,
-            'Content-Type': 'application/json'
-        },
+                'Access-Control-Allow-Headers': '*',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': '*'
+            },
             "body": json.dumps("Missing id")
         }
 
@@ -39,8 +38,10 @@ def update_item(event, context):
         if key != 'id':
             expAttrName["#" + key] = key
             expAttrValue[":" + key] = value
-            conditionExpr += ('attribute_exists(#' + key + ')' + (' AND ' if index != lastIndex else ''))
-            updateExpression += ("#" + key + " = :" + key + (", " if index != lastIndex else ""))
+            conditionExpr += ('attribute_exists(#' + key + ')' +
+                              (' AND ' if index != lastIndex else ''))
+            updateExpression += ("#" + key + " = :" +
+                                 key + (", " if index != lastIndex else ""))
     try:
         response = table.update_item(
             Key=keyDict,
@@ -53,38 +54,31 @@ def update_item(event, context):
         return {
             "statusCode": 400,
             'headers': {
-            'Access-Control-Allow-Headers': '*',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': '*',
-            "Access-Control-Allow-Credentials" : True,
-            'Content-Type': 'application/json'
-        },
+                'Access-Control-Allow-Headers': '*',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': '*'
+            },
             "body": "Invalid attributes"
         }
 
-    
     if(response['ResponseMetadata']['HTTPStatusCode'] == 200):
         return {
             'statusCode': 200,
             'headers': {
-            'Access-Control-Allow-Headers': '*',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': '*',
-            "Access-Control-Allow-Credentials" : True,
-            'Content-Type': 'application/json'
-        },
+                'Access-Control-Allow-Headers': '*',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': '*'
+            },
             'body': json.dumps("Item updated successfully")
         }
     else:
         return {
             'statusCode': 400,
             'headers': {
-            'Access-Control-Allow-Headers': '*',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': '*',
-            "Access-Control-Allow-Credentials" : True,
-            'Content-Type': 'application/json'
-        },
+                'Access-Control-Allow-Headers': '*',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': '*'
+            },
             'body': json.dumps("Error updating item")
         }
 
@@ -101,10 +95,12 @@ def get_table_items(event, context):
         'body': json.dumps(response['Items'])
     }
 
+
 def get_images_by_id(event, context):
     id = event['pathParameters']['id']
-    urls= []
-    result = s3.list_objects_v2(Bucket='animalimagesbucket',Prefix='folder_'+id+'/')
+    urls = []
+    result = s3.list_objects_v2(
+        Bucket='animalimagesbucket', Prefix='folder_'+id+'/')
     if 'Contents' in result:
         for obj in result.get('Contents'):
             print(obj.get('Key'))
@@ -126,6 +122,7 @@ def get_images_by_id(event, context):
         'body': json.dumps(urls)
     }
 
+
 def excel_processing_handler(event, context):
     animal_data = []
     region = "us-east-1"
@@ -139,14 +136,10 @@ def excel_processing_handler(event, context):
     animal_data = csv_file['Body'].read().decode('utf-8-sig').split('\n')
     csv_reader = csv.reader(animal_data, delimiter=',', quotechar='"')
 
-   
-
-    
-   
     for row in csv_reader:
         print(row)
 
-        if row: 
+        if row:
             id = row[0]
             name = row[1]
             health = row[2]
@@ -155,35 +148,35 @@ def excel_processing_handler(event, context):
             type = row[5]
             age = row[6]
 
-        
-
         add_to_dynamo = dynamodb.put_item(
 
             TableName='husky_shelter',
             Item={
 
-                'id' : {'S': id},
-                'name' : {'S': name},
-                'health' : {'S': health},
-                'status' : {'S': status},
-                'location' : {'S': location},
-                'type' : {'S': type},
-                'age' : {'S': age}
-            
+                'id': {'S': id},
+                'name': {'S': name},
+                'health': {'S': health},
+                'status': {'S': status},
+                'location': {'S': location},
+                'type': {'S': type},
+                'age': {'S': age}
+
             }
 
 
-    )    
-
+        )
 
     return {
         'statusCode': 200,
         'body': "Hello World"
     }
+
+
 def resize_image(image_path, resized_path, high, width):
     with Image.open(image_path) as image:
         image.thumbnail((high, width))
         image.save(resized_path)
+
 
 def s3_images_handler(event, context):
     for record in event['Records']:
@@ -201,10 +194,12 @@ def s3_images_handler(event, context):
             s3.download_file(bucket, key, download_path)
             resize_image(download_path, upload_path_500, 500, 500)
             resize_image(download_path, upload_path_50, 50, 50)
-            s3.upload_file(upload_path_500, bucket, f'folder_{metadata["id"]}/{name}')
-            s3.upload_file(upload_path_50, bucket, f'thumbnails/{metadata["id"]}.jpeg')
+            s3.upload_file(upload_path_500, bucket,
+                           f'folder_{metadata["id"]}/{name}')
+            s3.upload_file(upload_path_50, bucket,
+                           f'thumbnails/{metadata["id"]}.jpeg')
             print('Image resized and uploaded to S3')
-        else :
+        else:
             print('Image not resized')
         if not (key.startswith('folder_') or key.startswith('thumbnails/')):
             s3.delete_object(Bucket=bucket, Key=key)

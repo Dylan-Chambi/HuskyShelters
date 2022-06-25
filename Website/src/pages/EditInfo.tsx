@@ -20,6 +20,15 @@ const EditInfo = () => {
     const { register, setValue, handleSubmit, formState: { errors } } = useForm<PetType>();
 
     const saveChanges: SubmitHandler<PetType> = (petData) => {
+        console.log(petData);
+        const newPetData = JSON.stringify({
+            age: petData.age === "" ? petInfo!.age : petData.age,
+            health: petData.health === "" ? petInfo!.health : petData.health,
+            location: petData.location === "" ? petInfo!.location : petData.location,
+            name: petData.name === "" ? petInfo!.name : petData.name,
+            status: petData.status === "" ? petInfo!.status : petData.status
+        }); 
+        console.log(newPetData);
         fetch(process.env.REACT_APP_POST_UPDATE_ITEM!, {
             headers: {
                 "Content-Type": "application/json",
@@ -27,8 +36,9 @@ const EditInfo = () => {
             },
             method: "POST",
             mode: "no-cors",
-            body: JSON.stringify({ ...petData, id: petInfo!.id })
+            body: newPetData
         }).then(res => {
+            console.log(res);
             navigate("/pet", {
                 state: {
                     animal: { ...petData, id: petInfo!.id, type: petInfo!.type, status: petInfo!.status }
