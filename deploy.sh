@@ -43,12 +43,14 @@ esac
 if [[ $i -eq 1 ]]; then
   echo "Python dependencies installation"
   cd CloudFormation
+  rm -r build
   pip install -r requirements.txt -t build
   cp -r src/app.py build
 
   echo "Node JS dependencies installation"
   cd ../Website
-  npm install  --legacy-peer-deps
+  rm -r node_modules
+  npm i
   cd ..
 fi
 
@@ -62,6 +64,7 @@ if [[ $b -eq 1 ]]; then
   
   echo "Building website"
   cd ../Website
+  rm -r buiild
   npm run build
   cd ..
 fi

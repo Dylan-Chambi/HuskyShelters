@@ -1,7 +1,7 @@
 {
   "include": [
     "./src/*"
-, "src/pages/RehomePet.tsx", "src/pages/Pet.tsx", "src/pages/AboutUs.tsx", "src/components/uploadButton/UploadButton.tsx"  ],
+   ],
   "compilerOptions": {
     "strict": true,
     "lib": [
