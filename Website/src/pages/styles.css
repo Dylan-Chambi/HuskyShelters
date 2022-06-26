@@ -62,16 +62,16 @@ body {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
   font-size: 0.875rem;
-  color: #6c757d;
+  color: #f0ad4e;
 }
 
 .nav-underline .nav-link:hover {
-  color: #007bff;
+  color: #f0ad4e;
 }
 
 .nav-underline .active {
   font-weight: 500;
-  color: #343a40;
+  color: #f0ad4e;
 }
 
 .text-white-50 {

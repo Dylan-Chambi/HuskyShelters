@@ -59,7 +59,7 @@ const EditInfo = () => {
                         <h1 className="text-center">EDIT YOUR PET INFORMATION!</h1>
                         <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-around", alignItems: "center" }}>
                             <div className="card bg-dark card-center my-2 p-2 " style={{ width: '20rem', height: '20rem' }}>
-                                <img src={Dog1} className="card-img-top" alt="dog1"  ></img>
+                                <img src={petInfo.thumbnail} className="card-img-top" alt="dog1"  ></img>
                             </div>
                             <div>
                                 <div className="input-group p-3 mx-auto w-500">

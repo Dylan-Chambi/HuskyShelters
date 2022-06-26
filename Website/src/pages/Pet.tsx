@@ -67,7 +67,7 @@ const Pet = () => {
             <h1 className="text-center font-weight-bold"> Hi my Name is {animal.name} </h1>
             <div className="row d-flex justify-content-around my-3 p-3">
                 <div className="card bg-dark card-center my-2 p-2" style={{ width: '20rem', height: '20rem' }}>
-                    <img src={Dog1} className="card-img-top" alt="dog1"  ></img>
+                    <img src={animal.thumbnail} className="card-img-top" alt="dog1"  ></img>
                 </div>
                 <div className="card bg-dark card-center" style={{ width: '60rem', height: '20rem' }}>
                     <h1 className="text-warning">Facts</h1>
