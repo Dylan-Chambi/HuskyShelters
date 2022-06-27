@@ -1,11 +1,17 @@
-import { TextField, Typography } from "@mui/material";
+import { FormLabel, InputLabel, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/material";
 import * as React from "react";
+import { Theme, useTheme } from '@mui/material/styles';
 import { useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import Dog1 from "../images/dog1.jpg";
 import { PetType } from "../schemas/animalDynamoDB";
+import OutlinedInput from '@mui/material/OutlinedInput';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { locationOptions, healthOptions, statusOptions } from "../schemas/animalDynamoDB";
+import { style } from "@mui/system";
 
 const EditInfo = () => {
     const navigate = useNavigate();
@@ -17,7 +23,7 @@ const EditInfo = () => {
         setPetInfo(state.animal as PetType);
     }, [location]);
 
-    const { register, setValue, handleSubmit, formState: { errors } } = useForm<PetType>();
+    const { register, setValue, handleSubmit, formState: { errors }, getValues } = useForm<PetType>();
 
     const saveChanges: SubmitHandler<PetType> = (petData) => {
         console.log(petData);
@@ -27,8 +33,8 @@ const EditInfo = () => {
             health: petData.health === "" ? petInfo!.health : petData.health,
             location: petData.location === "" ? petInfo!.location : petData.location,
             name: petData.name === "" ? petInfo!.name : petData.name,
-            status: petData.status === "" ? petInfo!.status : petData.status
-        }); 
+            status: petData.status === "" ? petInfo!.status : petData.status,
+        });
         console.log(newPetData);
         fetch(process.env.REACT_APP_POST_UPDATE_ITEM!, {
             headers: {
@@ -42,7 +48,7 @@ const EditInfo = () => {
             console.log(res);
             navigate("/pet", {
                 state: {
-                    animal: { ...petData, id: petInfo!.id, type: petInfo!.type, status: petInfo!.status }
+                    animal: { ...petData, id: petInfo!.id, type: petInfo!.type, status: petInfo!.status, thumbnail: petInfo!.thumbnail }
                 }
             });
         }).catch(err => {
@@ -73,21 +79,65 @@ const EditInfo = () => {
                                     <Box className="input-group-prepend">
                                         <Typography className="input-group-text bg-dark text-light border-0" >Health Status</Typography>
                                     </Box>
-                                    <TextField type="text" className="form-control bg-dark text-light" size="small" {...register("health")} placeholder={petInfo.health} sx={{ input: { color: "white" } }} />
+                                    <TextField
+                                        select
+                                        className="form-control bg-dark text-light"
+                                        size="small"
+                                        defaultValue={petInfo.health}
+                                        sx={{ input: { color: "white" } }}
+                                        {...register("health")}
+                                    >
+                                        {healthOptions.map((health, index) => {
+                                            return <MenuItem key={index} value={health}>{health}</MenuItem>
+                                        })}
+                                    </TextField>
+                                </div>
+                                <div className="input-group mb-3 p-3 mx-auto">
+                                    <Box className="input-group-prepend">
+                                        <Typography className="input-group-text bg-dark text-light border-0" >Status</Typography>
+                                    </Box>
+                                    <TextField
+                                        select
+                                        className="form-control bg-dark text-light"
+                                        size="small"
+                                        defaultValue={petInfo.status}
+                                        sx={{ input: { color: "white" } }}
+                                        {...register("status")}
+                                    >
+                                        {statusOptions.map((status, index) => {
+                                            return <MenuItem key={index} value={status}>{status}</MenuItem>
+                                        }
+                                        )}
+                                    </TextField>
                                 </div>
 
                                 <div className="input-group mb-3 p-3 mx-auto">
                                     <Box className="input-group-prepend">
                                         <Typography className="input-group-text bg-dark text-light border-0" >Age</Typography>
                                     </Box>
-                                    <TextField type="text" className="form-control bg-dark text-light" size="small" {...register("age")} placeholder={petInfo.age} sx={{ input: { color: "white" } }} />
+                                    <TextField 
+                                    type="number" 
+                                    InputProps={{ inputProps: { min: 0, max: 20 } }}
+                                    className="form-control bg-dark text-light" size="small" {...register("age")} placeholder={petInfo.age} sx={{ input: { color: "white" } }} />
                                 </div>
 
                                 <div className="input-group mb-3 p-3 mx-auto">
                                     <Box className="input-group-prepend">
                                         <Typography className="input-group-text bg-dark text-light border-0" >Location</Typography>
                                     </Box>
-                                    <TextField type="text" className="form-control bg-dark text-light" size="small" {...register("location")} placeholder={petInfo.location} sx={{ input: { color: "white" } }} />
+                                    <TextField
+                                        select
+                                        className="form-control bg-dark text-light"
+                                        size="small"
+                                        defaultValue={petInfo.location}
+                                        sx={{ input: { color: "white" } }}
+                                        {...register("location")}
+                                    >
+                                        {locationOptions.map((location, index) => {
+                                            return <MenuItem key={index} value={location}>{location}</MenuItem>
+                                        }
+                                        )}
+                                    </TextField>
                                 </div>
                             </div>
                         </Box>
