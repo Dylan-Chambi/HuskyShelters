@@ -153,8 +153,7 @@ Resources:
         ProcessExcel:
           Type: S3
           Properties:
-            Bucket:
-              Ref: "AnimalDataBucket"
+            Bucket: !Ref AnimalDataBucket
             Events: s3:ObjectCreated:*
             Filter:
               S3Key:
@@ -178,12 +177,11 @@ Resources:
         ConverImages:
           Type: S3
           Properties:
-            Bucket:
-              Ref: "AnimalImagesBucket"
+            Bucket: !Ref AnimalImagesBucket
             Events: s3:ObjectCreated:*
       Policies:
         - S3CrudPolicy:
-            BucketName: 'animalimagesbucket'
+            BucketName: !Ref AnimalImagesBucket
 
   CloudFrontOriginIdentity:
     Type: 'AWS::CloudFront::CloudFrontOriginAccessIdentity'
