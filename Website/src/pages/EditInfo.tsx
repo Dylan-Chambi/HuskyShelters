@@ -62,23 +62,24 @@ const EditInfo = () => {
         <>
             {petInfo ?
                 <div>
-                    <div className=" my-4 p-3 mx-auto">
-                        <h1 className="text-center">EDIT YOUR PET INFORMATION!</h1>
+                    <div className=" my-4 p-3 mt-5 mb-5 mx-auto">
+                        <h1 className="text-center mb-5">EDIT YOUR PET INFORMATION!</h1>
                         <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-around", alignItems: "center" }}>
-                            <div className="card bg-dark card-center my-2 p-2 " style={{ width: '20rem', height: '20rem' }}>
-                                <img src={petInfo.thumbnail} className="card-img-top" alt="dog1"  ></img>
+                            <div className="card bg-dark card-center my-2 p-3 " style={{ width: '25rem', height: '25rem' }}>
+                                <img src={petInfo.thumbnail} className="card-img-top" style={{ width: '23rem', height: '23rem' }} alt="dog1"  ></img>
                             </div>
                             <div>
                                 <div className="input-group p-3 mx-auto w-500">
-                                    <Box className="input-group-prepend">
-                                        <Typography className="input-group-text bg-dark text-light border-0" >Name</Typography>
-                                    </Box>
-                                    <TextField type="text" className="form-control bg-dark text-light" size="small" {...register("name")} placeholder={petInfo.name} sx={{ input: { color: "white", width: "400px" } }} />
+                                    <Box className="input-group-prepend " style={{ width: '10rem', height: '3rem' }}>
+                                        <Typography className="input-group-text bg-dark text-light border-0" style={{ width: '10rem', height: '3rem' }}>Name</Typography>
+                                        </Box>
+                                    <TextField type="text" className="rounded form-control bg-dark text-light" style={{ width: '10rem', height: '3rem' }} size="small" {...register("name")} placeholder={petInfo.name} sx={{ input: { color: "white", width: "400px" } }} />
+                                    
                                 </div>
 
                                 <div className="input-group p-3 mx-auto">
-                                    <Box className="input-group-prepend">
-                                        <Typography className="input-group-text bg-dark text-light border-0" >Health Status</Typography>
+                                    <Box className="input-group-prepend" style={{ width: '10rem', height: '3rem' }}>
+                                        <Typography className="input-group-text bg-dark text-light border-0" style={{ width: '10rem', height: '3rem' }}>Health Status</Typography>
                                     </Box>
                                     <TextField
                                         select
@@ -94,8 +95,8 @@ const EditInfo = () => {
                                     </TextField>
                                 </div>
                                 <div className="input-group mb-3 p-3 mx-auto">
-                                    <Box className="input-group-prepend">
-                                        <Typography className="input-group-text bg-dark text-light border-0" >Status</Typography>
+                                    <Box className="input-group-prepend" style={{ width: '10rem', height: '3rem' }}>
+                                        <Typography className="input-group-text bg-dark text-light border-0" style={{ width: '10rem', height: '3rem' }}>Status</Typography>
                                     </Box>
                                     <TextField
                                         select
@@ -113,8 +114,8 @@ const EditInfo = () => {
                                 </div>
 
                                 <div className="input-group mb-3 p-3 mx-auto">
-                                    <Box className="input-group-prepend">
-                                        <Typography className="input-group-text bg-dark text-light border-0" >Age</Typography>
+                                    <Box className="input-group-prepend" style={{ width: '10rem', height: '3rem' }}>
+                                        <Typography className="input-group-text bg-dark text-light border-0" style={{ width: '10rem', height: '3rem' }}>Age</Typography>
                                     </Box>
                                     <TextField 
                                     type="number" 
@@ -123,10 +124,11 @@ const EditInfo = () => {
                                 </div>
 
                                 <div className="input-group mb-3 p-3 mx-auto">
-                                    <Box className="input-group-prepend">
-                                        <Typography className="input-group-text bg-dark text-light border-0" >Location</Typography>
+                                    <Box className="input-group-prepend" style={{ width: '10rem', height: '3rem' }}>
+                                        <Typography className="input-group-text bg-dark text-light border-0" style={{ width: '10rem', height: '3rem' }}>Location</Typography>
                                     </Box>
                                     <TextField
+                                        
                                         select
                                         className="form-control bg-dark text-light"
                                         size="small"
@@ -144,15 +146,17 @@ const EditInfo = () => {
                         </Box>
 
                     </div>
-                    <div className="row d-flex justify-content-around my-1 p-4">
-                        <button type="submit" className="btn btn-dark btn-lg" onClick={handleSubmit(saveChanges)}>
+                    <div className="container bg-yellow mb-5">
+        <div className="col-md-12 text-center">
+                        <button type="submit" className="btn btn-dark btn-lg mx-5" style={{ width: '20rem', height: '3rem' }} onClick={handleSubmit(saveChanges)}>
                             Save
                         </button>
                         <Link to="/pet" state={{ animal: petInfo }}>
-                            <button type="button" className="btn btn-dark btn-lg">
+                            <button type="button" className="btn btn-dark btn-lg" style={{ width: '20rem', height: '3rem' }}>
                                 Cancel
                             </button>
                         </Link>
+                    </div>
                     </div>
                 </div> : <div>Error: Missing pet info</div>}
         </>

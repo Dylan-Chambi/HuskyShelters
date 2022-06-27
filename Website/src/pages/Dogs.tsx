@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Dog2 from "../images/dog2.png";
 import axios from "axios";
 import { PetType } from "../schemas/animalDynamoDB";
 
@@ -34,8 +33,6 @@ const Dogs = () => {
                                 </Link>
                             </div>
                         </div>
-
-
                     )
                 })}
             </div>

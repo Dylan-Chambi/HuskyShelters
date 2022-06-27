@@ -5,7 +5,7 @@ import Cats from "../images/cats.png";
 const FindAPet = () => {
     return (
         <main role="main" className="bg-warning">
-       <h1 className="text-center mt-5">Find your new best friend...</h1>
+       <h1 className="text-center mt-5 mb-5">Find your new best friend...</h1>
             <div className="d-flex justify-content-around mt-5">
                 <Link to="/dogs">
                     <button type="button" className="btn btn-dark">

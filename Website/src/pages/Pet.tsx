@@ -68,13 +68,14 @@ const Pet = () => {
                     <img src={animal.thumbnail} className="card-img-top" style={{ width: '18rem', height: '18rem' }} alt="dog1"  ></img>
                 </div>
                 <div className="card bg-dark card-center my-3 p-3" style={{ width: '60rem', height: '20rem' }}>
-                    <h1 className="text-warning">Facts</h1>
-                    <h1 className="text-warning">about me!</h1>
-                    <h1 className="text-warning">----------------------</h1>
-                    <h4 className="text-light font-weight-bold">HEALTH STATUS:   {animal.health}</h4>
-                    <h4 className="text-light font-weight-bold">AGE:   {animal.age}</h4>
-                    <h4 className="text-light font-weight-bold">LOCATION:   {animal.location}</h4>
-                    <h1 className="text-warning">----------------------</h1>
+                    <h2 className="text-warning">Facts</h2>
+                    <h2 className="text-warning">about me!</h2>
+                    <h3 className="text-warning">----------------------</h3>
+                    <h5 className="text-light font-weight-bold">HEALTH STATUS:   {animal.health}</h5>
+                    <h5 className="text-light font-weight-bold">AGE:   {animal.age}</h5>
+                    <h5 className="text-light font-weight-bold">LOCATION:   {animal.location}</h5>
+                    <h5 className="text-light font-weight-bold">STATUS:   {animal.status}</h5>
+                    <h3 className="text-warning">----------------------</h3>
                 </div>
             </div>
             <h2 className="p-4 font-weight-bold">More about me...</h2>
@@ -84,7 +85,7 @@ const Pet = () => {
                 {animalCollection.map((photo: any, index: number) => {
 
                     return (
-                        <div className="card bg-dark card-center my-3 p-3" key={index} style={{ width: '20rem', height: '20rem' }}>
+                        <div className="card bg-dark card-center my-3 p-3 mx-3" key={index} style={{ width: '20rem', height: '20rem' }}>
                             <img src={photo} className="card-img-top" alt="dog2" style={{ height: "100%", width: "100%" }}></img>
                         </div>
                     )
@@ -117,12 +118,6 @@ const Pet = () => {
                 <Link to="/edit" state={{ animal: animal }}>
                     <button type="button" className="btn btn-dark btn-lg mx-5">
                         EDIT INFORMATION!
-                    </button>
-                </Link>
-
-                <Link to="/">
-                    <button type="button" className="btn btn-dark btn-lg mx-5">
-                        CONTACT US!
                     </button>
                 </Link>
                 </div>

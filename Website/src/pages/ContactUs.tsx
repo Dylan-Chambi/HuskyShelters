@@ -1,10 +1,11 @@
 import * as React from "react";
 import ContactUs1 from "../images/contactUs1.jpg";
 import ContactUs2 from "../images/contactUs2.jpg";
+import ContactUs3 from "../images/contactUs3.jpg";
 const ContactUs = () => {
     return (
         <main role="main" className="bg-warning">
-            <div className="d-flex justify-content mt-5 mx-3">
+            <div className="m-auto d-flex justify-content mt-5 mx-3">
 
                 <div className="notes mx-3">
                     <p className="font-weight-bold mt-5 mb-3">Note: </p>
@@ -44,7 +45,7 @@ const ContactUs = () => {
                     <p className="font-weight-normal">We have specially trained staff dedicated to answering questions from shelter workers and placement groups.</p>
                     <h3 className="mt-4 mb-3">Do you want more information about a pet you’ve seen on Petfinder.com?</h3>
                     <p className="font-weight-normal">Please directly contact the animal welfare organization that is caring for this pet. This information can be found on the group’s home page or under the pet’s picture on their description page. Please don’t contact Petfinder.com about individual pets. We don’t have any information other than what is posted on their page so contacting us will slow your search and time may be of the essence.</p>
-                    <img src={ContactUs1}
+                    <img src={ContactUs3}
                         className="rounded float-end mt-5 mb-5"
                         alt=""
                         width="550"
