@@ -23,7 +23,7 @@ export const locationOptions = [
 
 export const statusOptions = [
     "Vaccinated",
-    "Not Vaccinated"
+    "Not vaccinated"
 ]
 
 export const healthOptions = [

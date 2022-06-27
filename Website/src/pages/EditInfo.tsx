@@ -1,17 +1,12 @@
-import { FormLabel, InputLabel, TextField, Typography } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 import { Box } from "@mui/material";
 import * as React from "react";
-import { Theme, useTheme } from '@mui/material/styles';
 import { useEffect, useState } from "react";
-import { SubmitHandler, useForm, Controller } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { PetType } from "../schemas/animalDynamoDB";
-import OutlinedInput from '@mui/material/OutlinedInput';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { locationOptions, healthOptions, statusOptions } from "../schemas/animalDynamoDB";
-import { style } from "@mui/system";
 
 const EditInfo = () => {
     const navigate = useNavigate();
@@ -48,7 +43,13 @@ const EditInfo = () => {
             console.log(res);
             navigate("/pet", {
                 state: {
-                    animal: { ...petData, id: petInfo!.id, type: petInfo!.type, status: petInfo!.status, thumbnail: petInfo!.thumbnail }
+                    animal: { 
+                        ...petData, 
+                        name: petData.name === "" ? petInfo!.name : petData.name,
+                        id: petInfo!.id, 
+                        type: petInfo!.type, 
+                        status: petInfo!.status, 
+                        thumbnail: petInfo!.thumbnail }
                 }
             });
         }).catch(err => {
