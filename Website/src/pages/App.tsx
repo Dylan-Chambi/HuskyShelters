@@ -4,7 +4,6 @@ import "./styles.css";
 import Layout from "./Layout";
 import ContactUs from "./ContactUs";
 import AboutUs from "./AboutUs";
-import RehomePet from "./RehomePet";
 import FindAPet from "./FindAPet";
 import Pet from "./Pet";
 import Dogs from "./Dogs";
@@ -57,11 +56,7 @@ export default function App() {
                   About Us
                 </p>
               </Link>
-              <Link to="/rehome" className="text-decoration-none">
-                <p className="nav-link active text-warning" >
-                  Rehome a Pet
-                </p>
-              </Link>
+      
               <Link to="/find" className="text-decoration-none">
                 <p className="nav-link active text-warning" >
                   Find a Pet
@@ -83,7 +78,6 @@ export default function App() {
           <Route path="/" element={<Layout />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/about" element={<AboutUs />} />
-          <Route path="/rehome" element={<RehomePet />} />
           <Route path="/find" element={<FindAPet />} />
           <Route path="/dogs" element={<Dogs />} />
           <Route path="/cats" element={<Cats />} />

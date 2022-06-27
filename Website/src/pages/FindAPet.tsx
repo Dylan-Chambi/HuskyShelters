@@ -5,17 +5,15 @@ import Cats from "../images/cats.png";
 const FindAPet = () => {
     return (
         <main role="main" className="bg-warning">
-            <div className=" my-3 p-3"></div>
-            <div className=" my-3 p-3"></div>
-            <div className=" my-3 p-3"></div>
-            <div className="d-flex justify-content-around">
+       <h1 className="text-center mt-5">Find your new best friend...</h1>
+            <div className="d-flex justify-content-around mt-5">
                 <Link to="/dogs">
                     <button type="button" className="btn btn-dark">
                         <img
                             className="rounded float-end"
                             src={Dogs}
                             alt=""
-                            width="350"
+                            width="300"
                             height="250"
                         />
                         <p className="font-weight-bold"> DOGS</p>
@@ -29,7 +27,7 @@ const FindAPet = () => {
                             className="rounded float-end"
                             src={Cats}
                             alt=""
-                            width="350"
+                            width="300"
                             height="250"
                         />
                         <p className="font-weight-bold"> CATS</p>
@@ -38,10 +36,6 @@ const FindAPet = () => {
 
             </div>
 
-            <div className=" my-5 p-5"></div>
-            <div className=" my-5 p-5"></div>
-            <div className=" my-1 p-1"></div>
-            <div className=" my-1 p-1"></div>
         </main>
     );
 
