@@ -63,6 +63,8 @@ if [[ $i -eq 1 ]]; then
 fi
 
 if [[ $b -eq 1 ]]; then
+  echo "Please, enter your deployments bucket"
+  read DEPLOYMENTS_BUCKET
   echo "Building template"
   cd ./CloudFormation
   aws cloudformation package \
@@ -116,30 +118,62 @@ fi
 
 if [[ $u -eq 1 ]]; then
   cd ./CloudFormation
-  echo "Uploading database"
-  aws s3 cp ./data/animalAdoptionData.csv s3://animaldatabucket346253/
+  while [ true ]; do
+    echo "Please, enter the name of the database to upload"
+    read database
+    if [ -f "./data/$database" ]; then
 
-  echo "Uploading images"
-  cd ./uploads
-  i=1
-  for dir in *; do
-    dir=${dir%*/}
-    echo "${dir##*/}"
-    tmp="${dir##*/}"
-    cd ${dir##*/}
+      echo "Uploading database"
+      aws s3 cp ./data/$database s3://animaldatabucket346253/
+      tmpArrDb=(${database//_/ })
+      dbIdTmp=${tmpArrDb[1]}
+      dbIdArrTmp=(${dbIdTmp//./ })
+      dbId=${dbIdArrTmp[0]}
+      echo "Database id: $dbId"
 
-    for filename in *; do
-      tmpArr=(${tmp//_/ })
-      #echo ${tmpArr[1]}
-      #echo ${filename}
-      aws s3 cp ${filename} s3://animalimagesbucket/uploads/ --metadata "{\"id\" : \"${tmpArr[1]}\" }"
+
+      echo "Uploading images"
+      cd ./uploads
+      i=1
+
+      folderChange="database_$dbId"
+
+      cd $folderChange
+      
+      for dir in *; do
+        dir=${dir%*/}
+        echo "${dir##*/}"
+        tmp="${dir##*/}"
+        cd ${dir##*/}
+
+      for filename in *; do
+        tmpArr=(${tmp//_/ })
+        #echo ${tmpArr[1]}
+        #echo ${filename}
+        aws s3 cp ${filename} s3://animalimagesbucket/uploads/ --metadata "{\"id\" : \"${tmpArr[1]}\" }"
+      done
+      ((i = i + 1))
+      cd ..
     done
-    ((i = i + 1))
     cd ..
-  done
-  cd ..
 
+    else
+      echo "Database not found"
+    fi
+
+    echo "Do you want to upload another database? (y/n)"
+    read answer
+    if [ "$answer" != "y" ]; then
+      break
+    fi
+
+    cd ..
+
+  done  
+
+  cd ..
   echo "Uploading website"
+  pwd
   cd ../Website
   aws s3 cp ./build s3://websiteadoptionbucket/ --recursive
   cd ..
