@@ -5,7 +5,8 @@ export type PetType = {
     location: string,
     name: string,
     status: string,
-    type: string
+    type: string,
+    thumbnail: string
 }
 
 export const locationOptions = [
@@ -22,7 +23,7 @@ export const locationOptions = [
 
 export const statusOptions = [
     "Vaccinated",
-    "Not Vaccinated"
+    "Not vaccinated"
 ]
 
 export const healthOptions = [
