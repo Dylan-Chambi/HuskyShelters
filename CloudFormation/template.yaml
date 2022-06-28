@@ -106,7 +106,7 @@ Resources:
   AnimalImagesBucket:
     Type: 'AWS::S3::Bucket'
     Properties:
-      BucketName: animalimagesbucket
+      BucketName: animalimagesbucket58746392
       AccessControl: 'Private'
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
@@ -133,7 +133,7 @@ Resources:
   WebsiteAdoptionBucket:
     Type: 'AWS::S3::Bucket'
     Properties:
-      BucketName: websiteadoptionbucket
+      BucketName: websiteadoptionbucket729834562
       WebsiteConfiguration:
         ErrorDocument: 'index.html'
         IndexDocument: 'index.html'
@@ -141,7 +141,7 @@ Resources:
   AnimalDataBucket:
     Type: 'AWS::S3::Bucket'
     Properties:
-      BucketName: animaldatabucket346253
+      BucketName: animaldatabucket23494786
 
   ExcelProcessingFunction:
     Type: AWS::Serverless::Function
@@ -163,7 +163,7 @@ Resources:
                     Value: ".csv" 
       Policies:
         - S3ReadPolicy:
-            BucketName: 'animaldatabucket346253'
+            BucketName: 'animaldatabucket23494786'
         - DynamoDBCrudPolicy:
             TableName: 'husky_shelter'
 
@@ -183,7 +183,7 @@ Resources:
             Events: s3:ObjectCreated:*
       Policies:
         - S3CrudPolicy:
-            BucketName: 'animalimagesbucket'
+            BucketName: 'animalimagesbucket58746392'
 
   CloudFrontOriginIdentity:
     Type: 'AWS::CloudFront::CloudFrontOriginAccessIdentity'
@@ -202,7 +202,7 @@ Resources:
             Principal:
               AWS: !Sub 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOriginIdentity}'
             Action: 's3:GetObject'
-            Resource: 'arn:aws:s3:::websiteadoptionbucket/*'
+            Resource: 'arn:aws:s3:::websiteadoptionbucket729834562/*'
 
   CloudFrontDistribution:
     Type: 'AWS::CloudFront::Distribution'

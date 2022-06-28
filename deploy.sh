@@ -129,7 +129,7 @@ if [[ $u -eq 1 ]]; then
     if [ -f "./data/$database" ]; then
 
       echo "Uploading database"
-      aws s3 cp ./data/$database s3://animaldatabucket346253/
+      aws s3 cp ./data/$database s3://animaldatabucket23494786/
       tmpArrDb=(${database//_/ })
       dbIdTmp=${tmpArrDb[1]}
       dbIdArrTmp=(${dbIdTmp//./ })
@@ -155,7 +155,7 @@ if [[ $u -eq 1 ]]; then
         tmpArr=(${tmp//_/ })
         #echo ${tmpArr[1]}
         #echo ${filename}
-        aws s3 cp ${filename} s3://animalimagesbucket/uploads/ --metadata "{\"id\" : \"${tmpArr[1]}\" }"
+        aws s3 cp ${filename} s3://animalimagesbucket58746392/uploads/ --metadata "{\"id\" : \"${tmpArr[1]}\" }"
       done
       ((i = i + 1))
       cd ..
@@ -180,6 +180,6 @@ if [[ $u -eq 1 ]]; then
   echo "Uploading website"
   pwd
   cd ../Website
-  aws s3 cp ./build s3://websiteadoptionbucket/ --recursive
+  aws s3 cp ./build s3://websiteadoptionbucket729834562/ --recursive
   cd ..
 fi

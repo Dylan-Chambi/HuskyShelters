@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk')
 const s3 = new AWS.S3()
-const uploadBucket = 'animalimagesbucket' 
+const uploadBucket = 'animalimagesbucket58746392' 
 const URL_EXPIRATION_SECONDS = 30000
 
 exports.upload_image_by_id = async (event) => {
