@@ -1,17 +1,21 @@
 #!/bin/bash
 
-OPTIONS=ibdwu
-LONGOPTS=install,build,deploy,website,upload
+OPTIONS=nibdwu
+LONGOPTS=name,install,build,deploy,website,upload
 
 ! PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "$0" -- "$@")
 
-i=0 p=0 b=0 d=0 w=0 u=0
+n=0 i=0 p=0 b=0 d=0 w=0 u=0
 
 # CF_FILE="/tmp/cf_file.txt"
 DEPLOYMENTS_BUCKET="camibucketdeloyment" #CHANGE TO YOUR OWN BUCKET
 PACKAGED_TEMPLATE="packaged-template.yaml"
 
 case "$1" in
+-n | --name)
+  n=1
+  shift
+  ;;
 -i | --install)
   i=1
   shift
@@ -47,6 +51,23 @@ case "$1" in
 *) ;;
 
 esac
+
+if [[ $n -eq 1 ]]; then
+  echo "Please enter the name of the bucket where the website will be stored"
+  read WEBSITENAME
+  echo "Please enter the name of the bucket where the .csv databases will be stored"
+  read DATABASENAME
+  echo "Please enter the name of the bucket where the animal images will be stored"
+  read ANIMALIMAGENAME
+  cd CloudFormation
+  rm -r env.txt
+  touch env.txt
+  echo $WEBSITENAME >> env.txt
+  echo $DATABASENAME >> env.txt
+  echo $ANIMALIMAGENAME >> env.txt
+  cd ..
+  
+fi
 
 if [[ $i -eq 1 ]]; then
   echo "Python dependencies installation"
