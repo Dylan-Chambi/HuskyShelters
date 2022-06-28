@@ -1,30 +1,31 @@
-# Project Animal Adoption
+# Proyecto Final Certificación AWS - Husky Shelters
 
-Husky Shelters is an animal adoption agency. They operate globally with the goal of
-providing shelter and hapiness to stray dogs and cats.
+## Integrantes del grupo:
 
-## Data migration
+- Dylan Chambi Frontanilla
+- Camila Alejandra Grandy Camacho
+- Joseph Anthony Meneses Salguero
+- Marcos Andres Simon Agreda
 
-Husky Shelters mantains a record for each animal they have, they store their health
-status, age, location and a collection of pictures. This information is mantained by
-their personnel, They have this information in spreadsheets and there is a different
-spreadsheet for each region they operate on. Husky Shelters needs to copy this
-information to the Cloud.
+## Requisitos de Software:
 
-They also have their pictures locally stored for each region they operate on, they also
-want to copy it to the Cloud.
+- AWS CLI
+- Versión de Python 3.7 (Recomendado 3.7.10)
+- Node.JS
+- Git
 
-## Husky Shelters API
-Husky Shelters wants an API that allows people to update the dogs and cats info
-and also the pictures.
+## Requisitos de Hardware:
+- Instancia EC2 Amazon Linux 2 (Mínimo t3.small)
 
-## Image conversion
-One of their concerns is that people update high resolution pictures that are too
-heavy. This could make cloud operations more expensive. So they want that every
-time someone updates a heavy image, the application resizes the image to a normal
-resolution 500x500 and to a thumbnail resolution 50x50.
 
-## Public website
-They want to have a public website where the info is available for future owners of
-these animals. The website will only display a list of animals with their thumbnail
-image next to it. If a person clicks the animal, all pictures of the animal will display.
+## Instalación:
+
+- Clonar el presente repositorio con el comando: ``` git clone https://github.com/Dylan-Chambi/HuskyShelters.git ```
+- Crear un ambiente de Python 3, con el siguiente comando: ``` python3 -m venv py3 ```
+- Activar dicho ambiente de Python 3, con el siguiente comando: ``` source py3/bin/activate ```
+- Entrar a la carpeta del repositorio con el comando: ``` cd HuskyShelters ```
+- Ejecutar el comando de instalación ``` ./deploy.sh -i ``` y espere a su terminación  
+- Ejecutar el comando de build ``` ./deploy.sh -b ```, se le solicitará un bucket en el cual se guardará el resultado del build.
+- Ejecutar el comando de deploy ``` ./deploy.sh -d ```, y espere a su terminación.
+- Ejecutar el comando de creación de website ``` ./deploy.sh -w ```, y espere a su terminación.
+- Ejecutar el comando de subida de datos ``` ./deploy.sh -u ```, se le solicitará que especifique un archivo .csv existente en la carpeta ```HuskyShelters/CloudFormation/data ``` Ej: animalAdoptionData_2.csv
