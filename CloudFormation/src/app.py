@@ -86,11 +86,15 @@ def update_item(event, context):
 
 def get_table_items(event, context):
     response = table.scan()
+    f = open('env.txt','r')
+    bucketName = f.read()
+    print(bucketName)
+    f.close()
     for item in response['Items']:
         url = s3.generate_presigned_url(
             ClientMethod='get_object',
             Params={
-                'Bucket': 'animalimagesbucket',
+                'Bucket': bucketName,
                 'Key': 'thumbnails/' + item['id'] + '_500.jpg'
             }
         )
@@ -98,9 +102,9 @@ def get_table_items(event, context):
     return {
         'statusCode': 200,
         'headers': {
-            'Access-Control-Allow-Headers': '*',
+            'Access-Control-Allow-Headers': 'Content-Type',
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': '*'
+            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
         },
         'body': json.dumps(response['Items'])
     }
@@ -109,15 +113,19 @@ def get_table_items(event, context):
 def get_images_by_id(event, context):
     id = event['pathParameters']['id']
     urls = []
+    f = open('env.txt','r')
+    bucketName = f.read()
+    print(bucketName)
+    f.close()
     result = s3.list_objects_v2(
-        Bucket='animalimagesbucket', Prefix='folder_'+id+'/')
+        Bucket=bucketName, Prefix='folder_'+id+'/')
     if 'Contents' in result:
         for obj in result.get('Contents'):
             print(obj.get('Key'))
             url = s3.generate_presigned_url(
                 ClientMethod='get_object',
                 Params={
-                    'Bucket': 'animalimagesbucket',
+                    'Bucket': bucketName,
                     'Key': obj.get('Key')
                 }
             )

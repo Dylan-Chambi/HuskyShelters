@@ -1,6 +1,18 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 
+Parameters: 
+
+  WebsiteAdoptionBucketName:
+    Type: String
+    
+  AnimalDataBucketName:
+    Type: String
+  
+  AnimalImagesBucketName:
+    Type: String
+
+
 Resources:
   HuskySheltersAPI:
     Type: AWS::Serverless::Api
@@ -48,8 +60,6 @@ Resources:
       Policies:
         - DynamoDBReadPolicy:
             TableName: !Ref Table
-        - S3ReadPolicy:
-            BucketName: !Ref AnimalImagesBucket
   GetImagesByID:
     Type: AWS::Serverless::Function
     Properties:
@@ -66,7 +76,7 @@ Resources:
             Method: GET
       Policies:
         - S3ReadPolicy:
-            BucketName: !Ref AnimalImagesBucket
+            BucketName: !Sub "arn:aws:s3:::${AnimalImagesBucketName}"
   UploadImageByID:
     Type: AWS::Serverless::Function
     Properties:
@@ -83,7 +93,7 @@ Resources:
             Method: GET
       Policies:
         - S3WritePolicy:
-            BucketName: !Ref AnimalImagesBucket
+            BucketName: !Sub "arn:aws:s3:::${AnimalImagesBucketName}"
   Table:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -106,7 +116,7 @@ Resources:
   AnimalImagesBucket:
     Type: 'AWS::S3::Bucket'
     Properties:
-      BucketName: animalimagesbucket
+      BucketName: !Ref AnimalImagesBucketName
       AccessControl: 'Private'
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
@@ -133,7 +143,7 @@ Resources:
   WebsiteAdoptionBucket:
     Type: 'AWS::S3::Bucket'
     Properties:
-      BucketName: websiteadoptionbucket
+      BucketName: !Ref WebsiteAdoptionBucketName
       WebsiteConfiguration:
         ErrorDocument: 'index.html'
         IndexDocument: 'index.html'
@@ -141,7 +151,7 @@ Resources:
   AnimalDataBucket:
     Type: 'AWS::S3::Bucket'
     Properties:
-      BucketName: animaldatabucket346253
+      BucketName: !Ref AnimalDataBucketName
 
   ExcelProcessingFunction:
     Type: AWS::Serverless::Function
@@ -163,9 +173,9 @@ Resources:
                     Value: ".csv" 
       Policies:
         - S3ReadPolicy:
-            BucketName: 'animaldatabucket346253'
+            BucketName: !Sub "arn:aws:s3:::${AnimalDataBucketName}"
         - DynamoDBCrudPolicy:
-            TableName: 'husky_shelter'
+            TableName: !Ref Table
 
   S3ImagesConversion:
     Type: AWS::Serverless::Function
@@ -183,7 +193,7 @@ Resources:
             Events: s3:ObjectCreated:*
       Policies:
         - S3CrudPolicy:
-            BucketName: 'animalimagesbucket'
+            BucketName: !Sub "arn:aws:s3:::${AnimalImagesBucketName}"
 
   CloudFrontOriginIdentity:
     Type: 'AWS::CloudFront::CloudFrontOriginAccessIdentity'
@@ -193,6 +203,7 @@ Resources:
 
   WebsiteAdoptionBucketPolicy:
     Type: 'AWS::S3::BucketPolicy'
+    DependsOn: 'CloudFrontOriginIdentity'
     Properties:
       Bucket: !Ref WebsiteAdoptionBucket
       PolicyDocument:
@@ -202,7 +213,7 @@ Resources:
             Principal:
               AWS: !Sub 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOriginIdentity}'
             Action: 's3:GetObject'
-            Resource: 'arn:aws:s3:::websiteadoptionbucket/*'
+            Resource: !Sub 'arn:aws:s3:::${WebsiteAdoptionBucketName}/*'
 
   CloudFrontDistribution:
     Type: 'AWS::CloudFront::Distribution'
